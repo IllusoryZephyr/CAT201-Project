@@ -9,7 +9,7 @@ public class DatabaseConnection {
 
         String host = dotenv.get("DB_URL");
         String username = dotenv.get("DB_USER");
-        String password = dotenv.get("DB_PASSWORD");
+        String password = dotenv.get("DB_PASS");
         try {
             Connection conn = DriverManager.getConnection(host, username, password);
             System.out.println("Connected to database");
