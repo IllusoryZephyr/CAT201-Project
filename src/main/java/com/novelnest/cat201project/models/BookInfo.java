@@ -8,15 +8,14 @@ public class BookInfo {
     private int quantity;
     private String imagePath;
 
-    public BookInfo(String imagePath, int quantity, double price, String synopsis, String title, int id) {
-        this.imagePath = imagePath;
-        this.quantity = quantity;
-        this.price = price;
-        this.synopsis = synopsis;
-        this.title = title;
+    public BookInfo(int id, String title, String synopsis, double price, int quantity, String imagePath) {
         this.id = id;
+        this.title = title;
+        this.synopsis = synopsis;
+        this.price = price;
+        this.quantity = quantity;
+        this.imagePath = imagePath;
     }
-
 
     public int getId() {
         return id;
