@@ -16,15 +16,12 @@
         <a href="addBook.jsp" class="btn-add">+ Add New Book</a>
     </div>
 
+    <%-- ... existing imports ... --%>
     <table border="1" class="book-table">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Title</th>
-            <th>Synopsis</th>
-            <th>Price</th>
-            <th>Stock</th>
-            <th>Action</th>
+            <th>ID</th><th>Title</th><th>Synopsis</th>
+            <th>Price</th><th>Stock</th><th>Action</th>
         </tr>
         </thead>
         <tbody>
@@ -32,7 +29,6 @@
             try {
                 BookDAO dao = new BookDAO();
                 List<BookInfo> bookList = dao.getAllBooks();
-
                 if(bookList != null && !bookList.isEmpty()) {
                     for(BookInfo book : bookList) {
         %>
@@ -44,39 +40,19 @@
             <td><%= book.getQuantity() %> units</td>
             <td>
                 <a href="${pageContext.request.contextPath}/DeleteBookServlet?id=<%= book.getId() %>"
-                   onclick="return confirm('Are you sure you want to delete this book?');"
-                   class="btn-delete">
-                    Delete
-                </a>
+                   class="btn-delete"
+                   data-title="<%= book.getTitle() %>">Delete</a>
             </td>
         </tr>
-        <%
-            }
-        } else {
-        %>
-        <tr>
-            <td colspan="6" style="text-align: center; padding: 20px;">
-                No books found in catalog.
-            </td>
-        </tr>
-        <%
-            }
-        } catch (Exception e) {
-        %>
-        <tr>
-            <td colspan="6" style="color:red; text-align: center;">
-                Error loading catalog: <%= e.getMessage() %>
-            </td>
-        </tr>
-        <%
-                e.printStackTrace();
-            }
-        %>
+        <% } } else { %>
+        <tr><td colspan="6">No books found in catalog.</td></tr>
+        <% } } catch (Exception e) { %>
+        <tr><td colspan="6" style="color:red;">Error: <%= e.getMessage() %></td></tr>
+        <% } %>
         </tbody>
     </table>
-</div>
 
-<script src="${pageContext.request.contextPath}/script.js"></script>
+    <script src="${pageContext.request.contextPath}/bookFunction.js"></script>
 
 </body>
 </html>

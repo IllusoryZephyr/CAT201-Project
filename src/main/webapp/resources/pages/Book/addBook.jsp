@@ -3,7 +3,7 @@
 <head>
     <title>NovelNest - Add New Book</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
-    <script src="${pageContext.request.contextPath}/script.js"></script>
+    <script src="${pageContext.request.contextPath}/bookFunction.js"></script>
 </head>
 <body>
 <div class="container">
