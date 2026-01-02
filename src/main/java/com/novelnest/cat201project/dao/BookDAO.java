@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+//testing
 public class BookDAO {
     public boolean addBook(BookInfo book) {
         String sql = "INSERT INTO books (book_title, book_synopsis, book_price, book_quantity, book_image_path) VALUES (?, ?, ?, ?, ?)";
