@@ -21,7 +21,8 @@
         <thead>
         <tr>
             <th>ID</th><th>Title</th><th>Synopsis</th>
-            <th>Price</th><th>Stock</th><th>Action</th>
+            <th>Price</th><th>Stock</th><th>Delete Action</th>
+            <th>Edit Action</th>
         </tr>
         </thead>
         <tbody>
@@ -38,6 +39,9 @@
             <td><%= book.getSynopsis() %></td>
             <td>RM <%= String.format("%.2f", book.getPrice()) %></td>
             <td><%= book.getQuantity() %> units</td>
+            <td>
+                <a href="editBook.jsp?id=<%= book.getId() %>" class="btn-edit">Edit</a>
+            </td>
             <td>
                 <a href="${pageContext.request.contextPath}/DeleteBookServlet?id=<%= book.getId() %>"
                    class="btn-delete"

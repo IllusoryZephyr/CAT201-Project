@@ -90,4 +90,52 @@ public class BookDAO {
         System.out.println("--- DEBUG END: Total Books = " + books.size() + " ---");
         return books;
     }
+
+    public boolean updateBook(BookInfo book) {
+        String sql = "UPDATE books SET book_title = ?, book_synopsis = ?, book_price = ?, book_quantity = ?, book_image_path = ? WHERE book_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, book.getTitle());
+            pstmt.setString(2, book.getSynopsis());
+            pstmt.setDouble(3, book.getPrice());
+            pstmt.setInt(4, book.getQuantity());
+            pstmt.setString(5, book.getImagePath());
+            pstmt.setInt(6, book.getId()); // The ID is used in the WHERE clause
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public BookInfo getBookById(int id) {
+        String sql = "SELECT * FROM books WHERE book_id = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    // Mapping the database columns to your BookInfo model
+                    return new BookInfo(
+                            rs.getInt("book_id"),
+                            rs.getString("book_title"),
+                            rs.getString("book_synopsis"),
+                            rs.getDouble("book_price"),
+                            rs.getInt("book_quantity"),
+                            rs.getString("book_image_path")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error fetching book by ID: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null; // Returns null if the book isn't found
+    }
 }
