@@ -21,6 +21,11 @@ public class Cart {
     }
     public List<CartItem> getItems(){return items;}
 
+    public void removeItem(int bookId) {
+        // removeIf is a shortcut that removes any item where the condition is true
+        items.removeIf(item -> item.getBook().getId() == bookId);
+    }
+
     public double grandTotal(){
         double total = 0;
         for(CartItem item : items){
