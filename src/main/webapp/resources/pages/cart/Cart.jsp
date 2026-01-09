@@ -7,8 +7,9 @@
 <html>
 <head>
     <title>Shopping Cart - NovelNest</title>
-    <link rel="stylesheet" href="">
-    <script src=""></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="cart.css">
+    <script src="checkoutValidation.js"></script>
 </head>
 <body>
 
@@ -24,7 +25,7 @@
     %>
     <div class="empty-cart">
         <p>Your cart is currently empty.</p>
-        <a href="home.jsp" class="btn btn-primary">Browse Books</a> <%-- home.jsp could be other page like book --%>
+        <a href="home.jsp" class="btn btn-primary">Browse Books</a> <%-- home.jsp could be other page like book page or product page--%>
     </div>
     <%
     } else {
