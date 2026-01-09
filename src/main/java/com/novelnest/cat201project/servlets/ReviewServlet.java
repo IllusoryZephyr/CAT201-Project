@@ -25,9 +25,9 @@ public class ReviewServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         if (session.getAttribute("user") == null) {
-            User testUser = new User();
+            UserInfo testUser = new UserInfo();
             testUser.setId(2);
-            testUser.setUsername("TesterAdmin");
+            testUser.setName("TesterAdmin");
             session.setAttribute("user", testUser);
         }
 
