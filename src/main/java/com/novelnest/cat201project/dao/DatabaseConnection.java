@@ -9,10 +9,9 @@ public class DatabaseConnection {
 
         Dotenv dotenv = Dotenv.load();
 
-        // Ensure these match your .env keys
-        String url = dotenv.get("DB_URL");
-        String user = dotenv.get("DB_USER");
-        String password = dotenv.get("DB_PASS");
+        String url = "jdbc:oracle:thin:@db.freesql.com:1521/23ai_34ui2";
+        String user = "ILLUSORYZEPHYR_SCHEMA_HJ8IH";
+        String password = "7BQAGQWYEVTL46B7QWWx!HTEA0QJHG";
 
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -22,7 +21,7 @@ public class DatabaseConnection {
             System.out.println("Database Connection Failed!");
             e.printStackTrace();
         }
-        return con; // Returns the connection (or null if failed)
 
+        return con;
     }
 }
