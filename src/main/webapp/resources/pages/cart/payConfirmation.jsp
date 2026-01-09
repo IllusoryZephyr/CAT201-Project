@@ -15,7 +15,6 @@
             Order ID: #<%= request.getParameter("orderId") %>
         </div>
 
-        <p>A confirmation email has been sent to your registered address.</p>
         <br>
 
         <a href="home.jsp" class="btn btn-primary">Continue Shopping</a>

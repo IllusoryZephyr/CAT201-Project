@@ -9,6 +9,7 @@
     <title>Shopping Cart - NovelNest</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="cart.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/common/footer/footer.css">
     <script src="checkoutValidation.js"></script>
 </head>
 <body>
@@ -96,6 +97,8 @@
         }
     %>
 </div>
+
+<jsp:include page="/resources/common/footer/footer.jsp" />
 
 </body>
 </html>
