@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import com.novelnest.cat201project.dao.BookDAO;
 import com.novelnest.cat201project.models.BookInfo;
-
+//ORACLE
 @WebServlet("/DeleteBookServlet")
 public class deleteBookServlet extends HttpServlet {
 
