@@ -25,7 +25,7 @@ public class CheckoutServlet extends HttpServlet {
         // Check is user logged in?
         Integer userId = (Integer) session.getAttribute("userId");
 
-        // temporary user id before user module
+        // ------------------temporary user id before user module------------------------(should be replaced)
 
         if (userId == null) {
             userId = 1;
@@ -34,39 +34,39 @@ public class CheckoutServlet extends HttpServlet {
 
         //  Validation: Is Cart empty?
         if (cart == null || cart.getItems().isEmpty()) {
-            response.sendRedirect("cart.jsp?error=EmptyCart");
+            response.sendRedirect("resources/pages/cart/Cart.jsp?error=EmptyCart");
             return;
         }
 
-        //  Get Form Data
+        //  Get form data from checkout page
         String address = request.getParameter("address");
         String paymentMethod = request.getParameter("paymentMethod");
 
         if (address == null || address.trim().isEmpty()) {
-            response.sendRedirect("checkout.jsp?error=MissingAddress");
+            response.sendRedirect("resources/pages/cart/checkout.jsp?error=MissingAddress");
             return;
         }
 
-        //  Save Order
+        //  Save Order to database
         OrderDao orderDao = new OrderDao();
         int orderId = orderDao.saveOrder(cart, userId, address);
 
         if (orderId > 0) {
-            // If Order success, Save Payment
+            // If Order success, save payment to database
             PaymentDao paymentDao = new PaymentDao();
             boolean paymentSuccess = paymentDao.savePayment(orderId, paymentMethod);
 
             if (paymentSuccess) {
                 //  SUCCESS: Clear Cart and Redirect
                 session.removeAttribute("cart");
-                response.sendRedirect("confirmation.jsp?orderId=" + orderId);
+                response.sendRedirect("resources/pages/cart/payConfirmation.jsp?orderId=" + orderId);
             } else {
                 // Payment failed
-                response.sendRedirect("checkout.jsp?error=PaymentFailed");
+                response.sendRedirect("resources/pages/cart/checkout.jsp?error=PaymentFailed");
             }
         } else {
             // Database Error
-            response.sendRedirect("checkout.jsp?error=OrderFailed");
+            response.sendRedirect("resources/pages/cart/checkout.jsp?error=OrderFailed");
         }
     }
 }

@@ -2,7 +2,7 @@ package com.novelnest.cat201project.servlets;
 
 import com.novelnest.cat201project.dao.ReviewsDao;
 import com.novelnest.cat201project.models.Reviews;
-import com.novelnest.cat201project.models.User;
+import com.novelnest.cat201project.models.UserInfo;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

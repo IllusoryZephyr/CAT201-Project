@@ -47,34 +47,34 @@ public class CartServlet extends HttpServlet {
             return;
         }
 
-        // ACTION: ADD TO CART
+        // IF: ADD TO CART
         if ("add".equals(action)) {
             // Retrieve book details from the form
             String title = request.getParameter("title");
             String image = request.getParameter("image");
             double price = Double.parseDouble(request.getParameter("price"));
 
-            // Create a temporary BookInfo object
+
             BookInfo book = new BookInfo(bookId, title, "Synopsis...", price, 1, image);
 
             // Add 1 to cart
             cart.addItem(book, 1);
 
-            // Redirect to Cart Page to show the user what they added
+
             response.sendRedirect(request.getContextPath() + "/resources/pages/cart/Cart.jsp");
         }
 
-        // ACTION: REMOVE ITEM
+        // IF: REMOVE ITEM
         else if ("remove".equals(action)) {
             cart.removeItem(bookId);
             response.sendRedirect(request.getContextPath() + "/resources/pages/cart/Cart.jsp");
         }
 
-        // ACTION: UPDATE QUANTITY
+        // IF: UPDATE QUANTITY
         else if ("update".equals(action)) {
             int quantity = Integer.parseInt(request.getParameter("quantity"));
 
-            // Validate: Quantity must be at least 1
+            // ensure quantity must be at least 1
             if (quantity > 0) {
                 for (CartItem item : cart.getItems()) {
                     if (item.getBook().getId() == bookId) {
