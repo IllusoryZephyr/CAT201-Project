@@ -1,0 +1,114 @@
+/* Layout Containers */
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    margin: 20px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* 1. Summary Section (Top) */
+#ratingSummaryContainer {
+    background: #eef2f7;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-align: center;
+    border-left: 5px solid #3498db;
+}
+
+#ratingSummaryContainer strong {
+    font-size: 24px;
+    color: #2c3e50;
+    display: block;
+}
+
+/* 2. Reviews Table (Middle) */
+.book-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+}
+
+.book-table th {
+    background-color: #3498db;
+    color: white;
+    text-align: left;
+    padding: 12px;
+}
+
+.book-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+}
+
+.book-table tr:hover {
+    background-color: #fcfcfc;
+}
+
+/* Style the User ID column */
+.book-table td:first-child {
+    font-weight: bold;
+    color: #7f8c8d;
+    width: 80px;
+}
+
+/* 3. Review Form (Bottom) */
+#reviewForm {
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 25px;
+    border-radius: 8px;
+}
+
+#reviewForm h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+#reviewForm input,
+#reviewForm textarea,
+#reviewForm select {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Crucial for layout */
+}
+
+#reviewForm button {
+    background-color: #27ae60;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+#reviewForm button:hover {
+    background-color: #219150;
+}
+
+/* Debug Info Styling */
+.debug-box {
+    font-size: 12px;
+    color: #e67e22;
+    background: #fff5eb;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 15px;
+}

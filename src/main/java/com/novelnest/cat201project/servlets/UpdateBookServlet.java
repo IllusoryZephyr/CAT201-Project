@@ -11,29 +11,39 @@ import java.io.IOException;
 
 @WebServlet("/UpdateBookServlet")
 public class UpdateBookServlet extends HttpServlet {
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 1. Get data from the form
-        int id = Integer.parseInt(request.getParameter("id"));
-        String title = request.getParameter("title");
-        String synopsis = request.getParameter("synopsis");
-        double price = Double.parseDouble(request.getParameter("price"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-        String imagePath = request.getParameter("imagePath");
+        // IMPORTANT: Set encoding before reading any parameters for Oracle compatibility
+        request.setCharacterEncoding("UTF-8");
 
-        // 2. Create a BookInfo object with the ID
-        BookInfo book = new BookInfo(id, title, synopsis, price, quantity, imagePath);
+        try {
+            // 1. Get data from the form
+            int id = Integer.parseInt(request.getParameter("id"));
+            String title = request.getParameter("title");
+            String synopsis = request.getParameter("synopsis");
+            double price = Double.parseDouble(request.getParameter("price"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            String imagePath = request.getParameter("imagePath");
 
-        // 3. Call DAO to update
-        BookDAO dao = new BookDAO();
-        boolean success = dao.updateBook(book);
+            // 2. Create a BookInfo object
+            BookInfo book = new BookInfo(id, title, synopsis, price, quantity, imagePath);
 
-        // 4. Redirect back to catalog with a status message
-        if (success) {
-            response.sendRedirect(request.getContextPath() + "/resources/pages/Book/viewBook.jsp");
-        } else {
-            response.sendRedirect("editBook.jsp?id=" + id + "&error=failed");
+            // 3. Call DAO to update
+            BookDAO dao = new BookDAO();
+            boolean success = dao.updateBook(book);
+
+            // 4. Redirect
+            if (success) {
+                // sendRedirect is best for Oracle to ensure the COMMIT is fully visible
+                response.sendRedirect(request.getContextPath() + "/resources/pages/Book/viewBook.jsp");
+            } else {
+                response.sendRedirect("editBook.jsp?id=" + id + "&error=failed");
+            }
+        } catch (NumberFormatException e) {
+            // Handle cases where ID, Price, or Quantity are not valid numbers
+            response.sendRedirect("editBook.jsp?error=invalid_input");
         }
     }
 }

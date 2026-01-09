@@ -1,16 +1,11 @@
 package com.novelnest.cat201project.servlets;
 
-import java.io.*;
-
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
-
+import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import com.novelnest.cat201project.dao.BookDAO;
 import com.novelnest.cat201project.models.BookInfo;
 
@@ -21,26 +16,38 @@ public class AddBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 1. Get data from form
-        String title = request.getParameter("title");
-        String synopsis = request.getParameter("synopsis");
+        request.setCharacterEncoding("UTF-8");
 
-        // Use a try-catch or check for null if price/quantity could be empty
-        double price = Double.parseDouble(request.getParameter("price"));
-        int quantity = Integer.parseInt(request.getParameter("quantity"));
-        String imagePath = request.getParameter("imagePath");
+        try {
+            // 1. Get data from form
+            String title = request.getParameter("title");
+            String synopsis = request.getParameter("synopsis");
 
-        // 2. Create Object (Matches your updated constructor)
-        BookInfo newBook = new BookInfo(0, title, synopsis, price, quantity, imagePath);
+            // Validate inputs aren't null or empty before parsing
+            String priceStr = request.getParameter("price");
+            String quantityStr = request.getParameter("quantity");
 
-        // 3. Save to DB
-        BookDAO dao = new BookDAO();
-        if (dao.addBook(newBook)) {
-            // Add the leading "/" and the full folder path
-            response.sendRedirect(request.getContextPath() + "/resources/pages/Book/viewBook.jsp");
-        }
-        else {
-            response.getWriter().println("Error adding book to database!");
+            if (priceStr == null || quantityStr == null) {
+                response.getWriter().println("Error: Missing price or quantity");
+                return;
+            }
+
+            double price = Double.parseDouble(priceStr);
+            int quantity = Integer.parseInt(quantityStr);
+            String imagePath = request.getParameter("imagePath");
+
+            // 2. Create Object (ID 0 is fine for Oracle Identity)
+            BookInfo newBook = new BookInfo(0, title, synopsis, price, quantity, imagePath);
+
+            // 3. Save to DB
+            BookDAO dao = new BookDAO();
+            if (dao.addBook(newBook)) {
+                response.sendRedirect(request.getContextPath() + "/resources/pages/Book/viewBook.jsp");
+            } else {
+                response.getWriter().println("Error adding book to Oracle database!");
+            }
+        } catch (NumberFormatException e) {
+            response.getWriter().println("Invalid input: Price and Quantity must be numbers.");
         }
     }
 }

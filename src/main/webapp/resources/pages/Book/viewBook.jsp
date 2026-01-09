@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>NovelNest - Book Catalog</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
+    <link rel="stylesheet" type="text/css" href="viewBook.css">
 </head>
 <body>
 
@@ -49,9 +49,9 @@
             </td>
         </tr>
         <% } } else { %>
-        <tr><td colspan="6">No books found in catalog.</td></tr>
+        <tr><td colspan="7">No books found in catalog.</td></tr>
         <% } } catch (Exception e) { %>
-        <tr><td colspan="6" style="color:red;">Error: <%= e.getMessage() %></td></tr>
+        <tr><td colspan="7" style="color:red;">Error: <%= e.getMessage() %></td></tr>
         <% } %>
         </tbody>
     </table>

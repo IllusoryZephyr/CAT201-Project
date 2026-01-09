@@ -22,7 +22,7 @@
 <html>
 <head>
     <title>NovelNest - Edit Book</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
+    <link rel="stylesheet" type="text/css" href="editBook.css">
 </head>
 <body>
 <div class="container">

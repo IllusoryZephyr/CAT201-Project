@@ -1,37 +1,47 @@
-CREATE TABLE books
-(
-    BOOK_ID         INT AUTO_INCREMENT PRIMARY KEY,
-    BOOK_TITLE      VARCHAR(255)                NOT NULL,
-    BOOK_SYNOPSIS   TEXT                        NULL,
-    BOOK_PRICE      DECIMAL(10, 2) DEFAULT 0.00 NULL,
-    BOOK_QUANTITY   INT            DEFAULT 0    NULL,
-    BOOK_IMAGE_PATH VARCHAR(255)                NULL
+CREATE SEQUENCE USER_ID_SEQ
+    START WITH 1
+    INCREMENT BY 1;
+
+CREATE SEQUENCE BOOK_ID_SEQ
+    START WITH 1
+    INCREMENT BY 1;
+
+CREATE SEQUENCE TAG_ID_SEQ
+    START WITH 1
+    INCREMENT BY 1;
+
+CREATE TABLE USERS (
+                       USER_ID NUMBER DEFAULT USER_ID_SEQ.NEXTVAL PRIMARY KEY,
+                       USER_NAME VARCHAR2(100),
+                       USER_PASSWORD VARCHAR2(100) CHECK (USER_PASSWORD >= 8),
+                       USER_CREATE_DATE DATE DEFAULT (SYSDATE),
+                       USER_IS_ADMIN NUMBER(1) CHECK (USER_IS_ADMIN = 0 OR USER_IS_ADMIN = 1)
+);
+
+CREATE TABLE BOOKS (
+                       BOOK_ID NUMBER DEFAULT BOOK_ID_SEQ.NEXTVAL PRIMARY KEY,
+                       BOOK_TITLE VARCHAR2(100),
+                       BOOK_SYNOPSIS VARCHAR2(1000),
+                       BOOK_PRICE      NUMBER(10, 2) DEFAULT 0.00   NULL,
+                       BOOK_QUANTITY   NUMBER            DEFAULT 0  NULL,
+                       BOOK_CREATE_DATE DATE DEFAULT (SYSDATE)
 );
 
 CREATE TABLE TAGS (
-                      TAG_ID   INT AUTO_INCREMENT PRIMARY KEY,
-                      TAG_NAME VARCHAR(100)
+                      TAG_ID NUMBER DEFAULT TAG_ID_SEQ.NEXTVAL PRIMARY KEY,
+                      TAG_NAME VARCHAR2(100)
 );
 
 CREATE TABLE BOOK_TAGS (
-                           BOOK_ID INT,
-                           TAG_ID  INT,
-                           PRIMARY KEY (BOOK_ID, TAG_ID),
-                           FOREIGN KEY (BOOK_ID) REFERENCES books(BOOK_ID) ON DELETE CASCADE,
-                           FOREIGN KEY (TAG_ID) REFERENCES TAGS(TAG_ID) ON DELETE CASCADE
+                           BOOK_ID NUMBER REFERENCES BOOKS(BOOK_ID),
+                           TAG_ID NUMBER REFERENCES TAGS(TAG_ID)
 );
 
-
-
-
 CREATE TABLE REVIEWS (
-                         USER_ID            INT,
-                         BOOK_ID            INT,
-                         REVIEW_TITLE       VARCHAR(100),
-                         REVIEW_RATING      TINYINT CHECK (REVIEW_RATING >= 0 AND REVIEW_RATING <= 5),
-                         REVIEW_DESCRIPTION VARCHAR(1000),
-                         REVIEW_CREATE_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-                         CONSTRAINT fk_user FOREIGN KEY (USER_ID) REFERENCES USERS(USER_ID),
-                         CONSTRAINT fk_book FOREIGN KEY (BOOK_ID) REFERENCES books(BOOK_ID)
+                         USER_ID NUMBER REFERENCES USERS(USER_ID),
+                         BOOK_ID NUMBER REFERENCES BOOKS(BOOK_ID),
+                         REVIEW_TITLE VARCHAR2(100),
+                         REVIEW_RATING NUMBER(1) CHECK (REVIEW_RATING >= 0 AND REVIEW_RATING <= 5),
+                         REVIEW_DESCRIPTION VARCHAR2(1000),
+                         REVIEW_CREATE_DATE DATE DEFAULT (SYSDATE)
 );

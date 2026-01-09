@@ -11,6 +11,7 @@
         .rating-summary { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; }
         .avg-score { font-weight: bold; color: #f39c12; }
     </style>
+    <link rel="stylesheet" type="text/css" href="BookRateReview.css">
     <script src="${pageContext.request.contextPath}/bookFunction.js" defer></script>
 </head>
 <body>

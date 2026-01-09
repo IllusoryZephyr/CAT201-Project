@@ -22,6 +22,15 @@ public class ReviewServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String idStr = request.getParameter("id");
+
+        HttpSession session = request.getSession();
+        if (session.getAttribute("user") == null) {
+            User testUser = new User();
+            testUser.setId(2);
+            testUser.setUsername("TesterAdmin");
+            session.setAttribute("user", testUser);
+        }
+
         if (idStr == null || idStr.isEmpty()) return;
 
         try {
@@ -64,56 +73,48 @@ public class ReviewServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        // Fix for Oracle character encoding
+        request.setCharacterEncoding("UTF-8");
 
         try {
-
-            //String bookIdStr = request.getParameter("bookId");
-            //String userIdStr = request.getParameter("userId");
+            // Get the Book ID from the hidden form field or parameter
+            String bookIdStr = request.getParameter("bookId");
             String ratingStr = request.getParameter("rating");
+            String title = request.getParameter("title");
+            String description = request.getParameter("description");
 
-            // Safety Check: If any are null or empty, stop and redirect
-            /*
-            if (bookIdStr == null || bookIdStr.isEmpty() || userIdStr == null || userIdStr.isEmpty()) {
-                response.sendRedirect("errorPage.jsp?msg=MissingID");
-                return;
-            }
-             */
-            int bookId = 2;
-            int userId = 1;
+            // PROJECT REQUIREMENT: Always use User ID 2
+            int userId = 2;
 
+            // Parse Book ID and Rating
+            int bookId = (bookIdStr != null) ? Integer.parseInt(bookIdStr) : 2; // Default to 2 if null
             int rating = Integer.parseInt(ratingStr);
-        String title = request.getParameter("title");
-        String description = request.getParameter("description");
 
-        // Create and populate the object
-        Reviews newReview = new Reviews();
-        newReview.setBookId(bookId);
-        newReview.setUserId(userId);
-        newReview.setRating(rating);
-        newReview.setTitle(title);
-        newReview.setDescription(description);
+            // Populate the model
+            Reviews newReview = new Reviews();
+            newReview.setBookId(bookId);
+            newReview.setUserId(userId);
+            newReview.setRating(rating);
+            newReview.setTitle(title);
+            newReview.setDescription(description);
 
-        // Save to Database
-        boolean success = reviewsDao.addReview(newReview);
+            // Save to Oracle Database
+            boolean success = reviewsDao.addReview(newReview);
 
-            // --- AJAX CHECK ---
-            // Check if the request is coming from JavaScript (Fetch/AJAX)
-        String requestedWith = request.getHeader("X-Requested-With");
-
+            // AJAX handling
+            String requestedWith = request.getHeader("X-Requested-With");
             if ("XMLHttpRequest".equals(requestedWith)) {
-                // Send a simple 200 OK status so JS knows it worked
                 response.setStatus(HttpServletResponse.SC_OK);
-                // Optional: send a message back
-                response.getWriter().write("Review saved successfully");
+                response.getWriter().write(success ? "Success" : "Database Error");
             } else {
-                // Standard browser behavior: Redirect back to the review page
+                // Redirect back to the review page to refresh list
                 response.sendRedirect("submitReview?id=" + bookId + "&success=" + success);
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
-            response.sendRedirect("submitReview?id=2&error=missing_data");    }
-
-}
+            response.sendRedirect("submitReview?id=2&error=invalid_format");
+        }
+    }
 
 
 }

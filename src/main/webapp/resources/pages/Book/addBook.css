@@ -1,0 +1,85 @@
+/* General Page Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Centers vertically */
+}
+
+/* Form Container */
+.container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px; /* Prevents form from getting too wide */
+}
+
+h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+/* Input Fields */
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #dcdfe6;
+    border-radius: 6px;
+    box-sizing: border-box; /* Important: keeps padding inside the width */
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+textarea {
+    height: 100px;
+    resize: none; /* Prevents users from breaking the layout */
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+/* Buttons */
+button[type="submit"] {
+    width: 100%;
+    padding: 14px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+/* Cancel Link */
+a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #7f8c8d;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+a:hover {
+    color: #e74c3c;
+    text-decoration: underline;
+}

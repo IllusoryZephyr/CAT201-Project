@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>NovelNest - Add New Book</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/style.css">
+    <link rel="stylesheet" type="text/css" href="addBook.css">
     <script src="${pageContext.request.contextPath}/bookFunction.js"></script>
 </head>
 <body>
