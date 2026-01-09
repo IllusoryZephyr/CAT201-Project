@@ -22,16 +22,7 @@ CREATE TABLE BOOK_TAGS (
 );
 
 
-CREATE TABLE REVIEWS (
-                         USER_ID            INT,
-                         BOOK_ID            INT,
-                         REVIEW_TITLE       VARCHAR(100),
-                         REVIEW_RATING      TINYINT CHECK (REVIEW_RATING >= 0 AND REVIEW_RATING <= 5),
-                         REVIEW_DESCRIPTION TEXT,
-                         REVIEW_CREATE_DATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                         FOREIGN KEY (USER_ID) REFERENCES USERS(USER_ID),
-                         FOREIGN KEY (BOOK_ID) REFERENCES books(BOOK_ID)
-);
+
 
 CREATE TABLE REVIEWS (
                          USER_ID            INT,
