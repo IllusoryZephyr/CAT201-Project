@@ -9,17 +9,19 @@ import java.util.List;
 
 public class BookDAO {
     public boolean addBook(BookInfo book) {
-        String sql = "INSERT INTO BOOKS (BOOK_TITLE, BOOK_SYNOPSIS, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO BOOKS (BOOK_TITLE, BOOK_AUTHOR, BOOK_CATEGORY, BOOK_SYNOPSIS, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, book.getTitle());
-            pstmt.setString(2, book.getSynopsis()); // Oracle JDBC maps String to CLOB automatically
-            pstmt.setDouble(3, book.getPrice());
-            pstmt.setInt(4, book.getQuantity());
-            pstmt.setString(5, book.getImagePath());
+            pstmt.setString(2, book.getAuthor());
+            pstmt.setString(3, book.getCategory());
+            pstmt.setString(4, book.getSynopsis()); // Oracle JDBC maps String to CLOB automatically
+            pstmt.setDouble(5, book.getPrice());
+            pstmt.setInt(6, book.getQuantity());
+            pstmt.setString(7, book.getImagePath());
 
             return pstmt.executeUpdate() > 0;
 
@@ -58,7 +60,7 @@ public class BookDAO {
 
     public List<BookInfo> getAllBooks() {
         List<BookInfo> books = new ArrayList<>();
-        //String sql = "SELECT BOOK_ID, BOOK_TITLE, BOOK_SYNOPSIS, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM BOOKS";
+        //String sql = "SELECT BOOK_ID, BOOK_TITLE, BOOK_AUTHOR, BOOK_CATEGORY, BOOK_SYNOPSIS, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM BOOKS";
 
         try (Connection conn = DatabaseConnection.getConnection()) {
             if (conn != null) {
@@ -78,6 +80,8 @@ public class BookDAO {
                         BookInfo book = new BookInfo(
                                 rs.getInt("BOOK_ID"),           // Lowercase as per your list
                                 rs.getString("BOOK_TITLE"),     // Uppercase as per your list
+                                rs.getString("BOOK_AUTHOR"),
+                                rs.getString("BOOK_CATEGORY"),
                                 rs.getString("BOOK_SYNOPSIS"),
                                 rs.getDouble("BOOK_PRICE"),
                                 rs.getInt("BOOK_QUANTITY"),
@@ -100,17 +104,19 @@ public class BookDAO {
     }
 
     public boolean updateBook(BookInfo book) {
-        String sql = "UPDATE books SET book_title = ?, book_synopsis = ?, book_price = ?, book_quantity = ?, book_image_path = ? WHERE book_id = ?";
+        String sql = "UPDATE books SET book_title = ?, book_author = ?, book_category = ?, book_synopsis = ?, book_price = ?, book_quantity = ?, book_image_path = ? WHERE book_id = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, book.getTitle());
-            pstmt.setString(2, book.getSynopsis());
-            pstmt.setDouble(3, book.getPrice());
-            pstmt.setInt(4, book.getQuantity());
-            pstmt.setString(5, book.getImagePath());
-            pstmt.setInt(6, book.getId()); // The ID is used in the WHERE clause
+            pstmt.setString(2, book.getAuthor());
+            pstmt.setString(3, book.getCategory());
+            pstmt.setString(4, book.getSynopsis());
+            pstmt.setDouble(5, book.getPrice());
+            pstmt.setInt(6, book.getQuantity());
+            pstmt.setString(7, book.getImagePath());
+            pstmt.setInt(8, book.getId()); // The ID is used in the WHERE clause
 
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -133,6 +139,8 @@ public class BookDAO {
                     return new BookInfo(
                             rs.getInt("book_id"),
                             rs.getString("book_title"),
+                            rs.getString("book_author"),
+                            rs.getString("book_category"),
                             rs.getString("book_synopsis"),
                             rs.getDouble("book_price"),
                             rs.getInt("book_quantity"),
@@ -145,6 +153,46 @@ public class BookDAO {
             e.printStackTrace();
         }
         return null; // Returns null if the book isn't found
+    }
+
+    // Search: Based on user input title
+    public List<BookInfo> searchBooks(String titleInput) {
+        List<BookInfo> books = new ArrayList<>();
+        String query = "SELECT * FROM books WHERE title LIKE ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, "%" + titleInput + "%");
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                //books.add(mapRowToBook(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
+
+    // Filter: Based on categories
+    public List<BookInfo> filterBooksByCategory(String category) {
+        List<BookInfo> books = new ArrayList<>();
+        String query = "SELECT * FROM books WHERE category = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, category);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                //books.add(mapRowToBook(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
     }
 }
 

@@ -55,7 +55,7 @@ public class CartServlet extends HttpServlet {
             double price = Double.parseDouble(request.getParameter("price"));
 
 
-            BookInfo book = new BookInfo(bookId, title, "Synopsis...", price, 1, image);
+            BookInfo book = new BookInfo(bookId, title, "Author", "Category", "Synopsis...", price, 1, image);
 
             // Add 1 to cart
             cart.addItem(book, 1);
