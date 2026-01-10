@@ -2,7 +2,7 @@ package com.novelnest.cat201project.servlets;
 
 import com.novelnest.cat201project.dao.ReviewsDao;
 import com.novelnest.cat201project.models.Reviews;
-import com.novelnest.cat201project.models.User;
+import com.novelnest.cat201project.models.UserInfo;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -25,9 +25,9 @@ public class ReviewServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         if (session.getAttribute("currentUser") == null) {
-            User testUser = new User();
+            UserInfo testUser = new UserInfo();
             testUser.setId(2);
-            testUser.setUsername("TesterAdmin");
+            testUser.setName("TesterAdmin");
             session.setAttribute("currentUser", testUser);
         }
 
@@ -79,7 +79,7 @@ public class ReviewServlet extends HttpServlet {
 
         try {
             HttpSession session = request.getSession(false); // false = don't create a new session if one doesn't exist
-            User user = (session != null) ? (User) session.getAttribute("currentUser") : null;// 2. Check if a user is actually logged in
+            UserInfo user = (session != null) ? (UserInfo) session.getAttribute("currentUser") : null;// 2. Check if a user is actually logged in
 
             int userId;
 

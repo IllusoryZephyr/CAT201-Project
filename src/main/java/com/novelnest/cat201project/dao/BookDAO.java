@@ -94,6 +94,8 @@ public class BookDAO {
                 book = new BookInfo(
                         rs.getInt("BOOK_ID"),           // Oracle is case sensitive (usually Upper)
                         rs.getString("BOOK_TITLE"),
+                        rs.getString("BOOK_AUTHOR"),
+                        rs.getString("BOOK_CATEGORY"),
                         rs.getString("BOOK_SYNOPSIS"),
                         rs.getDouble("BOOK_PRICE"),
                         rs.getInt("BOOK_QUANTITY"),
@@ -180,6 +182,8 @@ public class BookDAO {
         return new BookInfo(
                 rs.getInt("BOOK_ID"),
                 rs.getString("BOOK_TITLE"),
+                rs.getString("BOOK_AUTHOR"),
+                rs.getString("BOOK_CATEGORY"),
                 rs.getString("BOOK_SYNOPSIS"),
                 rs.getDouble("BOOK_PRICE"),
                 rs.getInt("BOOK_QUANTITY"),
