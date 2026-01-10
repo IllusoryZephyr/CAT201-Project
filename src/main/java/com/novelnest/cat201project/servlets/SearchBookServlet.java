@@ -44,6 +44,6 @@ public class SearchBookServlet extends HttpServlet {
         request.setAttribute("selectedCategory", category);
 
         // Forward to the catalogue JSP page to display results
-        request.getRequestDispatcher("/resources/pages/Book/catalogue.jsp").forward(request, response);
+        request.getRequestDispatcher("/resources/pages/Catalogue/catalogue.jsp").forward(request, response);
     }
 }
