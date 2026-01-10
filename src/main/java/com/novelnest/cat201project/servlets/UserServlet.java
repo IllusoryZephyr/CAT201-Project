@@ -109,6 +109,9 @@ public class UserServlet extends HttpServlet {
             if (userDAO.checkUserPassword(user)) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user_id", user.getId());
+                session.setAttribute("user_name", user.getName());
+                session.setAttribute("user_creation_date", user.getCreated());
+                session.setAttribute("user_is_admin", user.isAdmin());
 
                 //response.sendRedirect(request.getContextPath() + "/resources/pages/home.jsp");
                 response.sendRedirect(request.getContextPath() + "/resources/pages/user/testServlet.jsp");
