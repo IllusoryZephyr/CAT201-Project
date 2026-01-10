@@ -30,11 +30,11 @@
             </a>
 
             <% if (isLoggedIn) { %>
-            <a href="${pageContext.request.contextPath}/profile.jsp" class="icon-btn profile-btn" title="My Profile">
+            <a href="${pageContext.request.contextPath}/resources/pages/user/profile.jsp" class="icon-btn profile-btn" title="My Profile">
                 <i class="fas fa-user"></i>
             </a>
             <% } else { %>
-            <a href="${pageContext.request.contextPath}/login.jsp" class="icon-btn profile-btn" title="Login">
+            <a href="${pageContext.request.contextPath}/resources/pages/user/login.jsp" class="icon-btn profile-btn" title="Login">
                 <i class="fas fa-user"></i>
             </a>
             <% } %>
