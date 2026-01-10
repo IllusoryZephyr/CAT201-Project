@@ -11,7 +11,7 @@
         .avg-score { font-weight: bold; color: #f39c12; }
     </style>
     <link rel="stylesheet" type="text/css" href="BookRateReview.css">
-    <script src="${pageContext.request.contextPath}/bookFunction.js" defer></script>
+    <script src="${pageContext.request.contextPath}/resources/pages/Book/bookFunction.js" defer></script>
 </head>
 <body>
 
