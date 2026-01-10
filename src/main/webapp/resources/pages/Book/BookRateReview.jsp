@@ -23,7 +23,7 @@
     <form id="reviewForm" action="${pageContext.request.contextPath}/submitReview" method="post">
 
         <%
-            // Get ID from URL, default to 2 if missing (prevents "null" string)
+            // Get ID from  URL, default to 2 if missing (prevents "null" string)
             String currentBookId = request.getParameter("id");
             if (currentBookId == null || currentBookId.isEmpty()) {
                 currentBookId = "2";
