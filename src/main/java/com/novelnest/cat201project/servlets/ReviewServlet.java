@@ -86,7 +86,7 @@ public class ReviewServlet extends HttpServlet {
             if (user != null) {
                 userId = user.getId();
             } else {
-                userId = 2;
+                userId = 0;
             }
             String bookIdStr = request.getParameter("bookId");
             String ratingStr = request.getParameter("rating");

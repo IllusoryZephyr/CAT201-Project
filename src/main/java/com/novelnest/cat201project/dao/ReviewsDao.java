@@ -11,8 +11,7 @@ public class ReviewsDao {
         Connection con = null;
         PreparedStatement ps = null;
         boolean success = false;
-        String sql = "INSERT INTO HR.REVIEWS ( USER_ID, BOOK_ID, REVIEW_TITLE, REVIEW_RATING, REVIEW_DESCRIPTION, REVIEW_CREATE_DATE) " +
-                "VALUES ( ?, ?, ?, ?, ?, SYSTIMESTAMP)";
+        String sql = "INSERT INTO HR.REVIEWS (USER_ID, BOOK_ID, REVIEW_TITLE, REVIEW_RATING, REVIEW_DESCRIPTION, REVIEW_CREATE_DATE) VALUES (?, ?, ?, ?, ?, SYSTIMESTAMP)";
         try {
             con = DatabaseConnection.getConnection();
             con.setAutoCommit(false); // Manual commit

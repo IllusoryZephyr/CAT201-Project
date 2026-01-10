@@ -7,38 +7,37 @@ import java.util.List;
 
 public class BookDAO {
 
-    // 1. CREATE: Returns Generated ID (int) instead of boolean
+    // 1. CREATE
     public int addBook(BookInfo book) {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         int generatedId = -1;
 
-        // Oracle INSERT - Do not insert BOOK_ID if you have a Trigger/Identity column
-        String sql = "INSERT INTO HR.BOOKS (BOOK_TITLE, BOOK_SYNOPSIS, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH) VALUES (?, ?, ?, ?, ?)";
-
+        String sql = "INSERT INTO HR.BOOK_TB (BOOK_ID, BOOK_TITLE, BOOK_AUTHOR, BOOK_CATEGORY, BOOK_DESCRIPTION, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH) " +
+                "VALUES (HR.BOOK_ID_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
         try {
             con = DatabaseConnection.getConnection();
-            con.setAutoCommit(false); // Manual commit for Oracle safety
+            con.setAutoCommit(false);
 
-            // Request the generated key (BOOK_ID)
             ps = con.prepareStatement(sql, new String[]{"BOOK_ID"});
 
             ps.setString(1, book.getTitle());
-            ps.setString(2, book.getSynopsis());
-            ps.setDouble(3, book.getPrice());
-            ps.setInt(4, book.getQuantity());
-            ps.setString(5, book.getImagePath());
+            ps.setString(2, book.getAuthor());
+            ps.setString(3, book.getCategory());
+            ps.setString(4, book.getSynopsis()); // Maps to BOOK_DESCRIPTION
+            ps.setDouble(5, book.getPrice());
+            ps.setInt(6, book.getQuantity());
+            ps.setString(7, book.getImagePath());
 
             int rowsAffected = ps.executeUpdate();
 
             if (rowsAffected > 0) {
-                // Retrieve the generated ID
                 rs = ps.getGeneratedKeys();
                 if (rs.next()) {
                     generatedId = rs.getInt(1);
                 }
-                con.commit(); // SAVE CHANGES
+                con.commit();
             } else {
                 con.rollback();
             }
@@ -46,9 +45,7 @@ public class BookDAO {
             e.printStackTrace();
             try { if (con != null) con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
         } finally {
-            try { if (rs != null) rs.close(); } catch (Exception e) {}
-            try { if (ps != null) ps.close(); } catch (Exception e) {}
-            try { if (con != null) con.close(); } catch (Exception e) {}
+            closeResources(rs, ps, con); // Use helper for consistency
         }
         return generatedId;
     }
@@ -59,7 +56,7 @@ public class BookDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT * FROM HR.BOOKS ORDER BY BOOK_ID";
+        String sql = "SELECT * FROM HR.BOOK_TB ORDER BY BOOK_ID";
 
         try {
             con = DatabaseConnection.getConnection();
@@ -77,12 +74,13 @@ public class BookDAO {
         return books;
     }
 
+    // 3. READ ONE (Fixed Syntax Error)
     public BookInfo getBookById(int id) {
         BookInfo book = null;
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT * FROM HR.BOOKS WHERE BOOK_ID = ?";
+        String sql = "SELECT * FROM HR.BOOK_TB WHERE BOOK_ID = ?";
 
         try {
             con = DatabaseConnection.getConnection();
@@ -91,23 +89,13 @@ public class BookDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                book = new BookInfo(
-                        rs.getInt("BOOK_ID"),           // Oracle is case sensitive (usually Upper)
-                        rs.getString("BOOK_TITLE"),
-                        rs.getString("BOOK_AUTHOR"),
-                        rs.getString("BOOK_CATEGORY"),
-                        rs.getString("BOOK_SYNOPSIS"),
-                        rs.getDouble("BOOK_PRICE"),
-                        rs.getInt("BOOK_QUANTITY"),
-                        rs.getString("BOOK_IMAGE_PATH")
-                );
+                // FIXED: Direct assignment using helper method
+                book = mapResultSetToBook(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            try { if (rs != null) rs.close(); } catch (Exception e) {}
-            try { if (ps != null) ps.close(); } catch (Exception e) {}
-            try { if (con != null) con.close(); } catch (Exception e) {}
+            closeResources(rs, ps, con); // Use helper for consistency
         }
         return book;
     }
@@ -117,7 +105,7 @@ public class BookDAO {
         Connection con = null;
         PreparedStatement ps = null;
         boolean success = false;
-        String sql = "UPDATE HR.BOOKS SET BOOK_TITLE = ?, BOOK_SYNOPSIS = ?, BOOK_PRICE = ?, BOOK_QUANTITY = ?, BOOK_IMAGE_PATH = ? WHERE BOOK_ID = ?";
+        String sql = "UPDATE HR.BOOK_TB SET BOOK_TITLE = ?, BOOK_AUTHOR=?, BOOK_CATEGORY=?, BOOK_DESCRIPTION = ?, BOOK_PRICE = ?, BOOK_QUANTITY = ?, BOOK_IMAGE_PATH = ? WHERE BOOK_ID = ?";
 
         try {
             con = DatabaseConnection.getConnection();
@@ -125,11 +113,13 @@ public class BookDAO {
 
             ps = con.prepareStatement(sql);
             ps.setString(1, book.getTitle());
-            ps.setString(2, book.getSynopsis());
-            ps.setDouble(3, book.getPrice());
-            ps.setInt(4, book.getQuantity());
-            ps.setString(5, book.getImagePath());
-            ps.setInt(6, book.getId());
+            ps.setString(2, book.getAuthor());
+            ps.setString(3, book.getCategory());
+            ps.setString(4, book.getSynopsis());
+            ps.setDouble(5, book.getPrice());
+            ps.setInt(6, book.getQuantity());
+            ps.setString(7, book.getImagePath());
+            ps.setInt(8, book.getId());
 
             int rows = ps.executeUpdate();
             if (rows > 0) {
@@ -152,7 +142,7 @@ public class BookDAO {
         Connection con = null;
         PreparedStatement ps = null;
         boolean success = false;
-        String sql = "DELETE FROM HR.BOOKS WHERE BOOK_ID = ?";
+        String sql = "DELETE FROM HR.BOOK_TB WHERE BOOK_ID = ?";
 
         try {
             con = DatabaseConnection.getConnection();
@@ -177,24 +167,82 @@ public class BookDAO {
         return success;
     }
 
-    // Helper method to map results (Handles Oracle Uppercase)
+    // --- HELPER METHODS ---
+
+    // Helper method to map results
     private BookInfo mapResultSetToBook(ResultSet rs) throws SQLException {
         return new BookInfo(
                 rs.getInt("BOOK_ID"),
                 rs.getString("BOOK_TITLE"),
                 rs.getString("BOOK_AUTHOR"),
                 rs.getString("BOOK_CATEGORY"),
-                rs.getString("BOOK_SYNOPSIS"),
+                rs.getString("BOOK_DESCRIPTION"), // Correct mapping
                 rs.getDouble("BOOK_PRICE"),
                 rs.getInt("BOOK_QUANTITY"),
                 rs.getString("BOOK_IMAGE_PATH")
         );
     }
 
-    // Helper to close resources
+    // Helper to close resources (You were missing this!)
     private void closeResources(ResultSet rs, Statement stmt, Connection con) {
         try { if (rs != null) rs.close(); } catch (Exception e) {}
         try { if (stmt != null) stmt.close(); } catch (Exception e) {}
         try { if (con != null) con.close(); } catch (Exception e) {}
+    }
+
+    // Search: Based on user input title
+    public List<BookInfo> searchBooks(String titleInput) {
+        List<BookInfo> books = new ArrayList<>();
+        String query = "SELECT * FROM books WHERE title LIKE ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, "%" + titleInput + "%");
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    books.add(new BookInfo(
+                            rs.getInt("BOOK_ID"),
+                            rs.getString("BOOK_TITLE"),
+                            rs.getString("BOOK_AUTHOR"),
+                            rs.getString("BOOK_CATEGORY"),
+                            rs.getString("BOOK_SYNOPSIS"),
+                            rs.getDouble("BOOK_PRICE"),
+                            rs.getInt("BOOK_QUANTITY"),
+                            rs.getString("BOOK_IMAGE_PATH")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
+    }
+
+    // Filter: Based on categories
+    public List<BookInfo> filterBooksByCategory(String category) {
+        List<BookInfo> books = new ArrayList<>();
+        String query = "SELECT * FROM books WHERE category = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setString(1, category);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    books.add(new BookInfo(
+                            rs.getInt("BOOK_ID"),
+                            rs.getString("BOOK_TITLE"),
+                            rs.getString("BOOK_AUTHOR"),
+                            rs.getString("BOOK_CATEGORY"),
+                            rs.getString("BOOK_SYNOPSIS"),
+                            rs.getDouble("BOOK_PRICE"),
+                            rs.getInt("BOOK_QUANTITY"),
+                            rs.getString("BOOK_IMAGE_PATH")));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return books;
     }
 }

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.novelnest.cat201project.models.User" %>
+<%@ page import="com.novelnest.cat201project.models.UserInfo" %>
 
 <html>
 <head>

@@ -7,14 +7,19 @@
     String idParam = request.getParameter("id");
     BookInfo book = null;
     if (idParam != null) {
-        int id = Integer.parseInt(idParam);
-        BookDAO dao = new BookDAO();
-        book = dao.getBookById(id);
+        try {
+            int id = Integer.parseInt(idParam);
+            BookDAO dao = new BookDAO();
+            book = dao.getBookById(id);
+        } catch (NumberFormatException e) {
+            response.sendRedirect("viewBook.jsp?error=invalidid");
+            return;
+        }
     }
 
-    // Redirect if book is not found to prevent "Cannot resolve symbol" errors
+    // Redirect if book is not found
     if (book == null) {
-        response.sendRedirect("viewBooks.jsp?error=notfound");
+        response.sendRedirect("viewBook.jsp?error=notfound");
         return;
     }
 %>
@@ -37,6 +42,19 @@
         </div>
 
         <div class="form-group">
+            <label for="author">Author:</label>
+            <%-- Check for null to avoid printing the word "null" in the box --%>
+            <input type="text" name="author" id="author"
+                   value="<%= (book.getAuthor() != null) ? book.getAuthor() : "" %>" required/>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input type="text" name="category" id="category"
+                   value="<%= (book.getCategory() != null) ? book.getCategory() : "" %>" required/>
+        </div>
+
+        <div class="form-group">
             <label for="price">Price (RM):</label>
             <input type="number" step="0.01" name="price" id="price" value="<%= book.getPrice() %>" required/>
         </div>
@@ -53,12 +71,12 @@
 
         <div class="form-actions">
             <button type="submit" class="btn-save">Save Changes</button>
-            <a href="viewBook.jsp" class="btn-cancel">Cancel</a>
+            <a href="viewBook.jsp?id=<%= book.getId() %>" class="btn-cancel">Cancel</a>
         </div>
     </form>
 </div>
 
-<script src="${pageContext.request.contextPath}/bookFunction.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/bookFunction.js"></script>
 
 </body>
 </html>
