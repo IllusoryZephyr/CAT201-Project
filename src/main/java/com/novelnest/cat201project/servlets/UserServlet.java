@@ -29,14 +29,16 @@ public class UserServlet extends HttpServlet {
             if (userDAO.addUser(user)) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user_id", user.getId());
+                session.setAttribute("user_name", user.getName());
+                session.setAttribute("user_creation_date", user.getCreated());
+                session.setAttribute("user_is_admin", user.isAdmin());
 
                 //response.sendRedirect(request.getContextPath() + "/resources/pages/user/home.jsp");
                 response.sendRedirect(request.getContextPath() + "/resources/pages/user/testServlet.jsp");
             }
             else {
                 request.setAttribute("error", "Username already exists");
-                //request.getRequestDispatcher("/resources/pages/user/signup.jsp").forward(request, response);
-                request.getRequestDispatcher("/resources/pages/user/testServlet.jsp").forward(request, response);
+                request.getRequestDispatcher("/resources/pages/user/signup.jsp").forward(request, response);
             }
         }
 
@@ -53,19 +55,16 @@ public class UserServlet extends HttpServlet {
                 UserDAO userDAO = new UserDAO();
 
                 if (userDAO.editUser(user)) {
-                    //response.sendRedirect(request.getContextPath() + "/resources/pages/home.jsp");
-                    response.sendRedirect(request.getContextPath() + "/resources/pages/user/testServlet.jsp");
+                    response.sendRedirect(request.getContextPath() + "/resources/pages/user/profile.jsp");
                 }
                 else {
                     request.setAttribute("error", "Failed to update user.");
-                    //request.getRequestDispatcher("/resources/pages/user/editUser.jsp").forward(request, response);
-                    request.getRequestDispatcher("/resources/pages/user/testServlet.jsp").forward(request, response);
+                    request.getRequestDispatcher("/resources/pages/user/editUser.jsp").forward(request, response);
                 }
             }
             else {
                 request.setAttribute("error", "User not logged in.");
-                //request.getRequestDispatcher("/resources/pages/user/login.jsp").forward(request, response);
-                request.getRequestDispatcher("/resources/pages/user/testServlet.jsp").forward(request, response);
+                request.getRequestDispatcher("/resources/pages/user/login.jsp").forward(request, response);
             }
         }
 
@@ -82,8 +81,7 @@ public class UserServlet extends HttpServlet {
                 if (userDAO.deleteUser(user)) {
                     session.invalidate();
 
-                    //response.sendRedirect(request.getContextPath() + "/resources/pages/user/signup.jsp");
-                    response.sendRedirect(request.getContextPath() + "/resources/pages/user/testServlet.jsp");
+                    response.sendRedirect(request.getContextPath() + "/resources/pages/user/signup.jsp");
                 }
                 else {
                     request.setAttribute("error", "Could not delete user.");
@@ -93,8 +91,7 @@ public class UserServlet extends HttpServlet {
             }
             else {
                 request.setAttribute("error", "User not logged in.");
-                //request.getRequestDispatcher("/resources/pages/user/login.jsp").forward(request, response);
-                request.getRequestDispatcher("/resources/pages/user/testServlet.jsp").forward(request, response);
+                request.getRequestDispatcher("/resources/pages/user/login.jsp").forward(request, response);
             }
         }
 
@@ -109,14 +106,16 @@ public class UserServlet extends HttpServlet {
             if (userDAO.checkUserPassword(user)) {
                 HttpSession session = request.getSession();
                 session.setAttribute("user_id", user.getId());
+                session.setAttribute("user_name", user.getName());
+                session.setAttribute("user_creation_date", user.getCreated());
+                session.setAttribute("user_is_admin", user.isAdmin());
 
                 //response.sendRedirect(request.getContextPath() + "/resources/pages/home.jsp");
                 response.sendRedirect(request.getContextPath() + "/resources/pages/user/testServlet.jsp");
             }
             else {
                 request.setAttribute("error", "Invalid username or password.");
-                //request.getRequestDispatcher("/resources/pages/user/login.jsp").forward(request, response);
-                request.getRequestDispatcher("/resources/pages/user/testServlet.jsp").forward(request, response);
+                request.getRequestDispatcher("/resources/pages/user/login.jsp").forward(request, response);
             }
         }
 
@@ -127,8 +126,7 @@ public class UserServlet extends HttpServlet {
                 session.invalidate();
             }
 
-            //response.sendRedirect(request.getContextPath() + "/resources/pages/user/login.jsp");
-            response.sendRedirect(request.getContextPath() + "/resources/pages/user/testServlet.jsp");
+            response.sendRedirect(request.getContextPath() + "/resources/pages/user/login.jsp");
         }
     }
 }

@@ -76,6 +76,8 @@ public class OrderDao {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+
+            generatedOrderId = -1; //to tell it fail
         } finally {
             // Close resources to prevent memory leaks
             try { if (rs != null) rs.close(); } catch (Exception e) {}
