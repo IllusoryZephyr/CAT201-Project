@@ -8,8 +8,7 @@
 <head>
     <title>NovelNest - Book Catalogue</title>
     <link rel="stylesheet" type="text/css" href="catalogue.css">
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 </head>
 
 <body>
@@ -30,7 +29,7 @@
             <div class="search-bar">
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" name="query" placeholder="Search books by title..."
-                       value="<%= request.getAttribute(" searchQuery") !=null ?
+                       value="<%= request.getAttribute("searchQuery") !=null ?
                                         request.getAttribute("searchQuery") : "" %>"
                        class="search-input"
                 />
