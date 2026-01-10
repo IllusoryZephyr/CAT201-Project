@@ -164,10 +164,18 @@ public class BookDAO {
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setString(1, "%" + titleInput + "%");
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                //books.add(mapRowToBook(rs));
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    books.add(new BookInfo(
+                            rs.getInt("BOOK_ID"),
+                            rs.getString("BOOK_TITLE"),
+                            rs.getString("BOOK_AUTHOR"),
+                            rs.getString("BOOK_CATEGORY"),
+                            rs.getString("BOOK_SYNOPSIS"),
+                            rs.getDouble("BOOK_PRICE"),
+                            rs.getInt("BOOK_QUANTITY"),
+                            rs.getString("BOOK_IMAGE_PATH")));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -184,10 +192,18 @@ public class BookDAO {
              PreparedStatement pstmt = conn.prepareStatement(query)) {
 
             pstmt.setString(1, category);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                //books.add(mapRowToBook(rs));
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    books.add(new BookInfo(
+                            rs.getInt("BOOK_ID"),
+                            rs.getString("BOOK_TITLE"),
+                            rs.getString("BOOK_AUTHOR"),
+                            rs.getString("BOOK_CATEGORY"),
+                            rs.getString("BOOK_SYNOPSIS"),
+                            rs.getDouble("BOOK_PRICE"),
+                            rs.getInt("BOOK_QUANTITY"),
+                            rs.getString("BOOK_IMAGE_PATH")));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
