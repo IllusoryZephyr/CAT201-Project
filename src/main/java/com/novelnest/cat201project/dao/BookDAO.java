@@ -243,7 +243,6 @@ public class BookDAO {
     }
 
     // Search books by title for catalogue display
-
     public List<BookInfo> searchBooksForCatalogue(String titleInput) {
         List<BookInfo> books = new ArrayList<>();
         String query = "SELECT BOOK_ID, BOOK_TITLE, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM books WHERE BOOK_TITLE LIKE ?";
@@ -272,7 +271,6 @@ public class BookDAO {
     }
 
     // Filter books by category for catalogue display
-
     public List<BookInfo> filterBooksByCategoryForCatalogue(String category) {
         List<BookInfo> books = new ArrayList<>();
         String query = "SELECT BOOK_ID, BOOK_TITLE, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM books WHERE BOOK_CATEGORY = ?";
