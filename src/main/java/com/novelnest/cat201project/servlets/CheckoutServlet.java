@@ -23,14 +23,23 @@ public class CheckoutServlet extends HttpServlet {
         Cart cart = (Cart) session.getAttribute("cart");
 
         // Check is user logged in?
-        Integer userId = (Integer) session.getAttribute("userId");
+        Integer userId = (Integer) session.getAttribute("user_id");
+
+        if (userId == null) {
+            session.setAttribute("redirectAfterLogin", "resources/pages/cart/checkout.jsp");
+
+            // Kick them to the Login Page
+            response.sendRedirect(request.getContextPath() + "/login.jsp?error=PleaseLoginFirst");
+            return;
+        }
+
 
         // ------------------temporary user id before user module------------------------(should be replaced)
 
-        if (userId == null) {
-            userId = 1;
-            System.out.println("WARNING: Using Dummy User ID 1 for testing.");
-        }
+        // if (userId == null) {
+        //     userId = 1;
+        //     System.out.println("WARNING: Using Dummy User ID 1 for testing.");
+        // }
 
         //  Validation: Is Cart empty?
         if (cart == null || cart.getItems().isEmpty()) {

@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="com.novelnest.cat201project.models.User" %>
-<script src="${pageContext.request.contextPath}/resources/js/bookFunction.js?v=1.1"></script>
+<%@ page import="com.novelnest.cat201project.models.UserInfo" %>
 
 <html>
 <head>
@@ -12,20 +11,26 @@
         .avg-score { font-weight: bold; color: #f39c12; }
     </style>
     <link rel="stylesheet" type="text/css" href="BookRateReview.css">
-    <script src="${pageContext.request.contextPath}/bookFunction.js" defer></script>
+    <script src="${pageContext.request.contextPath}/resources/pages/Book/bookFunction.js" defer></script>
 </head>
 <body>
 
-<p>Debug: Current User ID is <strong>${not empty sessionScope.user ? sessionScope.user.id : 'Not Logged In'}</strong></p>
 
 
 
 <div class="review-section">
     <h3>Leave a Review</h3>
     <form id="reviewForm" action="${pageContext.request.contextPath}/submitReview" method="post">
-        <input type="hidden" name="bookId" value="2">
-        <input type="hidden" id="hiddenUserId" value="1">
 
+        <%
+            // Get ID from URL, default to 2 if missing (prevents "null" string)
+            String currentBookId = request.getParameter("id");
+            if (currentBookId == null || currentBookId.isEmpty()) {
+                currentBookId = "2";
+            }
+        %>
+        <input type="hidden" name="bookId" id="bookId" value="<%= currentBookId %>">
+        <input type="hidden" name="userId" id="hiddenUserId" value="1">
         <div class="form-group">
             <label>Rating:</label>
             <select name="rating" required>

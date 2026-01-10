@@ -1,77 +1,110 @@
 package com.novelnest.cat201project.dao;
 
-import com.novelnest.cat201project.models.BookInfo;
-import com.novelnest.cat201project.dao.DatabaseConnection;
-import com.novelnest.cat201project.models.Reviews;
-
+import com.novelnest.cat201project.models.Reviews; // You need a Review model class
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewsDao {
-    public boolean addReview(Reviews review) {
-        String query = "INSERT INTO REVIEWS (USER_ID, BOOK_ID, REVIEW_TITLE, REVIEW_RATING, REVIEW_DESCRIPTION) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
+    public boolean addReview(Reviews review) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        boolean success = false;
+        String sql = "INSERT INTO HR.REVIEW_TB (USER_ID, BOOK_ID, REVIEW_TITLE, REVIEW_RATING, REVIEW_DESCRIPTION, REVIEW_CREATION_DATE) VALUES (?, ?, ?, ?, ?, SYSTIMESTAMP)";
+        try {
+            con = DatabaseConnection.getConnection();
+            con.setAutoCommit(false); // Manual commit
+
+            ps = con.prepareStatement(sql);
 
             ps.setInt(1, review.getUserId());
             ps.setInt(2, review.getBookId());
-            ps.setString(3, review.getTitle());
-            ps.setInt(4, review.getRating());
-            ps.setString(5, review.getDescription());
 
-            return ps.executeUpdate() > 0;
+            String title = (review.getTitle() != null) ? review.getTitle() : "Review";
+            ps.setString(3, title);          // Index 3 is TITLE
+
+            ps.setInt(4, review.getRating());       // Index 4 is RATING
+            ps.setString(5, review.getDescription()); // Index 5 is DESCRIPTION
+
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                con.commit();
+                success = true;
+            } else {
+                con.rollback();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            try { if (con != null) con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+        } finally {
+            try { if (ps != null) ps.close(); } catch (Exception e) {}
+            try { if (con != null) con.close(); } catch (Exception e) {}
         }
+        return success;
     }
 
     public List<Reviews> getReviewsByBookId(int bookId) {
-        List<Reviews> reviewsList = new ArrayList<>();
-        // SQL to fetch reviews for a specific book, newest first
-        String query = "SELECT * FROM REVIEWS WHERE BOOK_ID = ? ORDER BY REVIEW_CREATE_DATE DESC";
+        List<Reviews> reviews = new ArrayList<>();
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM HR.REVIEW_TB WHERE BOOK_ID = ? ORDER BY REVIEW_CREATION_DATE DESC";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-
+        try {
+            con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement(sql);
             ps.setInt(1, bookId);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
 
             while (rs.next()) {
-                Reviews review = new Reviews();
-                review.setUserId(rs.getInt("USER_ID"));
-                review.setBookId(rs.getInt("BOOK_ID"));
-                review.setTitle(rs.getString("REVIEW_TITLE"));
-                review.setRating(rs.getInt("REVIEW_RATING"));
-                review.setDescription(rs.getString("REVIEW_DESCRIPTION"));
-                review.setCreateDate(rs.getTimestamp("REVIEW_CREATE_DATE"));
-                reviewsList.add(review);
+                // Adjust constructor based on your Review model
+                Reviews r = new Reviews();
+                r.setUserId(rs.getInt("USER_ID"));
+                r.setBookId(rs.getInt("BOOK_ID"));
+                r.setTitle(rs.getString("REVIEW_TITLE")); // Make sure your model has setTitle
+                r.setRating(rs.getInt("REVIEW_RATING"));
+                r.setDescription(rs.getString("REVIEW_DESCRIPTION"));
+                r.setCreateDate(rs.getTimestamp("REVIEW_CREATION_DATE"));
+                reviews.add(r);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {}
+            try { if (ps != null) ps.close(); } catch (Exception e) {}
+            try { if (con != null) con.close(); } catch (Exception e) {}
         }
-        return reviewsList;
+        return reviews;
     }
-
     public double getAverageRating(int bookId) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
         double average = 0.0;
-        String query = "SELECT AVG(REVIEW_RATING) as avg_rating FROM REVIEWS WHERE BOOK_ID = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(query)) {
-
+        // Oracle's AVG function handles the math. COALESCE/NVL can default to 0 if no reviews exist.
+        String sql = "SELECT AVG(REVIEW_RATING) FROM HR.REVIEW_TB WHERE BOOK_ID = ?";
+        try {
+            con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement(sql);
             ps.setInt(1, bookId);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
 
             if (rs.next()) {
-                average = rs.getDouble("avg_rating");
+                // getDouble returns 0.0 if the value is SQL NULL, which handles new books automatically
+                average = rs.getDouble(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.err.println("Oracle Average Rating Error: " + e.getMessage());
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception e) {}
+            try { if (ps != null) ps.close(); } catch (Exception e) {}
+            try { if (con != null) con.close(); } catch (Exception e) {}
         }
-        // Returns 0.0 if no reviews exist
-        return Math.round(average * 10.0) / 10.0; // Rounds to 1 decimal place (e.g., 4.5)
+
+        return average;
     }
+
 }

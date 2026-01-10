@@ -24,19 +24,20 @@ public class ReviewServlet extends HttpServlet {
         String idStr = request.getParameter("id");
 
         HttpSession session = request.getSession();
-        if (session.getAttribute("user") == null) {
+        if (session.getAttribute("currentUser") == null) {
             UserInfo testUser = new UserInfo();
             testUser.setId(2);
             testUser.setName("TesterAdmin");
-            session.setAttribute("user", testUser);
+            session.setAttribute("currentUser", testUser);
         }
 
         if (idStr == null || idStr.isEmpty()) return;
 
         try {
             int bookId = Integer.parseInt(idStr);
-            List<Reviews> reviewList = reviewsDao.getReviewsByBookId(bookId);
-            double averageRating = reviewsDao.getAverageRating(bookId);
+            ReviewsDao reviewDao = new ReviewsDao();
+            List<Reviews> reviewList = reviewDao.getReviewsByBookId(bookId);
+            double averageRating = reviewDao.getAverageRating(bookId);
 
             if ("html".equals(request.getParameter("format"))) {
                 response.setContentType("text/html");
@@ -77,19 +78,32 @@ public class ReviewServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         try {
-            // Get the Book ID from the hidden form field or parameter
+            HttpSession session = request.getSession(false); // false = don't create a new session if one doesn't exist
+            UserInfo user = (session != null) ? (UserInfo) session.getAttribute("currentUser") : null;// 2. Check if a user is actually logged in
+
+            int userId;
+
+            if (user != null) {
+                userId = user.getId();
+            } else {
+                userId = 0;
+            }
             String bookIdStr = request.getParameter("bookId");
             String ratingStr = request.getParameter("rating");
             String title = request.getParameter("title");
             String description = request.getParameter("description");
 
-            // PROJECT REQUIREMENT: Always use User ID 2
-            int userId = 2;
+            System.out.println("DEBUG: Received bookId=" + bookIdStr + ", rating=" + ratingStr);
 
             // Parse Book ID and Rating
-            int bookId = (bookIdStr != null) ? Integer.parseInt(bookIdStr) : 2; // Default to 2 if null
-            int rating = Integer.parseInt(ratingStr);
-
+            int bookId = 2; // Default fallback
+            if (bookIdStr != null && !bookIdStr.trim().isEmpty() && !bookIdStr.equals("null")) {
+                bookId = Integer.parseInt(bookIdStr);
+            }
+            int rating = 5; // Default fallback
+            if (ratingStr != null && !ratingStr.trim().isEmpty()) {
+                rating = Integer.parseInt(ratingStr);
+            }
             // Populate the model
             Reviews newReview = new Reviews();
             newReview.setBookId(bookId);

@@ -1,158 +1,218 @@
 package com.novelnest.cat201project.dao;
+
 import com.novelnest.cat201project.models.BookInfo;
-import com.novelnest.cat201project.dao.DatabaseConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//sql
-
 public class BookDAO {
-    public boolean addBook(BookInfo book) {
-        String sql = "INSERT INTO BOOKS (BOOK_TITLE, BOOK_AUTHOR, BOOK_CATEGORY, BOOK_SYNOPSIS, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
+    // 1. CREATE
+    public int addBook(BookInfo book) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int generatedId = -1;
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql = "INSERT INTO HR.BOOK_TB (BOOK_ID, BOOK_TITLE, BOOK_AUTHOR, BOOK_CATEGORY, BOOK_DESCRIPTION, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH) " +
+                "VALUES (HR.BOOK_ID_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            con = DatabaseConnection.getConnection();
+            con.setAutoCommit(false);
 
-            pstmt.setString(1, book.getTitle());
-            pstmt.setString(2, book.getAuthor());
-            pstmt.setString(3, book.getCategory());
-            pstmt.setString(4, book.getSynopsis()); // Oracle JDBC maps String to CLOB automatically
-            pstmt.setDouble(5, book.getPrice());
-            pstmt.setInt(6, book.getQuantity());
-            pstmt.setString(7, book.getImagePath());
+            ps = con.prepareStatement(sql, new String[]{"BOOK_ID"});
 
-            return pstmt.executeUpdate() > 0;
+            ps.setString(1, book.getTitle());
+            ps.setString(2, book.getAuthor());
+            ps.setString(3, book.getCategory());
+            ps.setString(4, book.getSynopsis()); // Maps to BOOK_DESCRIPTION
+            ps.setDouble(5, book.getPrice());
+            ps.setInt(6, book.getQuantity());
+            ps.setString(7, book.getImagePath());
 
-            //boolean success = pstmt.executeUpdate() > 0;
-            /*if (success && !conn.getAutoCommit()) {
-                conn.commit();
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    generatedId = rs.getInt(1);
+                }
+                con.commit();
+            } else {
+                con.rollback();
             }
-            return success;*/
-        } catch (SQLException e) {
-            // This will print the EXACT reason (e.g., "Table doesn't exist" or "Data too long")
-            System.out.println("Database Error: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean deleteBook(int id) {
-        String sql = "DELETE FROM BOOKS WHERE BOOK_ID = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, id);
-
-            // pstmt.executeUpdate() returns an INT (number of rows deleted)
-            int rowsDeleted = pstmt.executeUpdate();
-
-            // We return TRUE if 1 or more rows were deleted
-            return rowsDeleted > 0;
-
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            try { if (con != null) con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+        } finally {
+            closeResources(rs, ps, con); // Use helper for consistency
         }
+        return generatedId;
     }
 
+    // 2. READ ALL
     public List<BookInfo> getAllBooks() {
         List<BookInfo> books = new ArrayList<>();
-        //String sql = "SELECT BOOK_ID, BOOK_TITLE, BOOK_AUTHOR, BOOK_CATEGORY, BOOK_SYNOPSIS, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM BOOKS";
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM HR.BOOK_TB ORDER BY BOOK_ID";
 
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            if (conn != null) {
-                System.out.println("1. Connection Successful!");
+        try {
+            con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
 
-                String sql = "SELECT * FROM BOOKS";
-                try (Statement stmt = conn.createStatement();
-                     ResultSet rs = stmt.executeQuery(sql)) {
-
-                    System.out.println("2. Query Executed.");
-
-                    if (!rs.isBeforeFirst()) {
-                        System.out.println("3. WARNING: Database found, but table is EMPTY.");
-                    }
-
-                    while (rs.next()) {
-                        BookInfo book = new BookInfo(
-                                rs.getInt("BOOK_ID"),           // Lowercase as per your list
-                                rs.getString("BOOK_TITLE"),     // Uppercase as per your list
-                                rs.getString("BOOK_AUTHOR"),
-                                rs.getString("BOOK_CATEGORY"),
-                                rs.getString("BOOK_SYNOPSIS"),
-                                rs.getDouble("BOOK_PRICE"),
-                                rs.getInt("BOOK_QUANTITY"),
-                                rs.getString("BOOK_IMAGE_PATH")
-                        );
-                        books.add(book);
-                        System.out.println("4. Found Book: " + book.getTitle());
-                    }
-                }
-            } else {
-                System.out.println("ERROR: Connection object is NULL.");
+            while (rs.next()) {
+                books.add(mapResultSetToBook(rs));
             }
-        } catch (Exception e) {
-            System.out.println("FATAL ERROR: " + e.getMessage());
+        } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            closeResources(rs, ps, con);
         }
-
-        System.out.println("--- DEBUG END: Total Books = " + books.size() + " ---");
         return books;
     }
 
-    public boolean updateBook(BookInfo book) {
-        String sql = "UPDATE books SET book_title = ?, book_author = ?, book_category = ?, book_synopsis = ?, book_price = ?, book_quantity = ?, book_image_path = ? WHERE book_id = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, book.getTitle());
-            pstmt.setString(2, book.getAuthor());
-            pstmt.setString(3, book.getCategory());
-            pstmt.setString(4, book.getSynopsis());
-            pstmt.setDouble(5, book.getPrice());
-            pstmt.setInt(6, book.getQuantity());
-            pstmt.setString(7, book.getImagePath());
-            pstmt.setInt(8, book.getId()); // The ID is used in the WHERE clause
-
-            return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
+    // 3. READ ONE (Fixed Syntax Error)
     public BookInfo getBookById(int id) {
-        String sql = "SELECT * FROM books WHERE book_id = ?";
+        BookInfo book = null;
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM HR.BOOK_TB WHERE BOOK_ID = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try {
+            con = DatabaseConnection.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
 
-            pstmt.setInt(1, id);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    // Mapping the database columns to your BookInfo model
-                    return new BookInfo(
-                            rs.getInt("book_id"),
-                            rs.getString("book_title"),
-                            rs.getString("book_author"),
-                            rs.getString("book_category"),
-                            rs.getString("book_synopsis"),
-                            rs.getDouble("book_price"),
-                            rs.getInt("book_quantity"),
-                            rs.getString("book_image_path")
-                    );
-                }
+            if (rs.next()) {
+                // FIXED: Direct assignment using helper method
+                book = mapResultSetToBook(rs);
             }
         } catch (SQLException e) {
-            System.out.println("Error fetching book by ID: " + e.getMessage());
             e.printStackTrace();
+        } finally {
+            closeResources(rs, ps, con); // Use helper for consistency
         }
-        return null; // Returns null if the book isn't found
+        return book;
+    }
+
+    // 4. UPDATE
+    public boolean updateBook(BookInfo book) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        boolean success = false;
+        String sql = "UPDATE HR.BOOK_TB SET BOOK_TITLE = ?, BOOK_AUTHOR=?, BOOK_CATEGORY=?, BOOK_DESCRIPTION = ?, BOOK_PRICE = ?, BOOK_QUANTITY = ?, BOOK_IMAGE_PATH = ? WHERE BOOK_ID = ?";
+
+        try {
+            con = DatabaseConnection.getConnection();
+            con.setAutoCommit(false);
+
+            ps = con.prepareStatement(sql);
+            ps.setString(1, book.getTitle());
+            ps.setString(2, book.getAuthor());
+            ps.setString(3, book.getCategory());
+            ps.setString(4, book.getSynopsis());
+            ps.setDouble(5, book.getPrice());
+            ps.setInt(6, book.getQuantity());
+            ps.setString(7, book.getImagePath());
+            ps.setInt(8, book.getId());
+
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                con.commit();
+                success = true;
+            } else {
+                con.rollback();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try { if (con != null) con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+        } finally {
+            closeResources(null, ps, con);
+        }
+        return success;
+    }
+
+    public boolean deleteBook(int id) {
+        Connection con = null;
+        PreparedStatement psBook = null;
+        PreparedStatement psReview = null;
+        boolean isDeleted = false;
+
+        try {
+            con = DatabaseConnection.getConnection();
+            con.setAutoCommit(false); // 1. Start Transaction
+
+            // ---------------------------------------------------------
+            // STEP A: Delete Reviews (Check table name!)
+            // If your book table is HR.BOOK_TB, your review table is likely HR.REVIEWS or HR.REVIEW_TB
+            // ---------------------------------------------------------
+            String deleteReviewsSql = "DELETE FROM HR.REVIEWS WHERE BOOK_ID = ?";
+            psReview = con.prepareStatement(deleteReviewsSql);
+            psReview.setInt(1, id);
+            psReview.executeUpdate();
+
+            // ---------------------------------------------------------
+            // STEP B: Delete Book (MUST MATCH YOUR getAllBooks NAME)
+            // Fixed: Added "HR." prefix
+            // ---------------------------------------------------------
+            String deleteBookSql = "DELETE FROM HR.BOOK_TB WHERE BOOK_ID = ?";
+            psBook = con.prepareStatement(deleteBookSql);
+            psBook.setInt(1, id);
+
+            int rowsAffected = psBook.executeUpdate();
+
+            if (rowsAffected > 0) {
+                isDeleted = true;
+                con.commit(); // 2. Commit if successful
+                System.out.println("DEBUG: Book deleted successfully.");
+            } else {
+                con.rollback(); // Rollback if book not found
+                System.out.println("DEBUG: Book ID not found.");
+            }
+
+        } catch (SQLException e) {
+            // 3. Rollback on Error
+            try { if (con != null) con.rollback(); } catch (SQLException ex) {}
+
+            System.out.println("DEBUG ERROR: " + e.getMessage());
+            e.printStackTrace(); // Check this if it still fails!
+        } finally {
+            // 4. Close Resources
+            // Since you have a helper method 'closeResources', you can use it here too:
+            // closeResources(null, psBook, null);
+            // But manual closing is fine too:
+            try { if (psReview != null) psReview.close(); } catch (Exception e) {}
+            try { if (psBook != null) psBook.close(); } catch (Exception e) {}
+            try { if (con != null) con.close(); } catch (Exception e) {}
+        }
+        return isDeleted;
+    }
+    // --- HELPER METHODS ---
+
+    // Helper method to map results
+    private BookInfo mapResultSetToBook(ResultSet rs) throws SQLException {
+        return new BookInfo(
+                rs.getInt("BOOK_ID"),
+                rs.getString("BOOK_TITLE"),
+                rs.getString("BOOK_AUTHOR"),
+                rs.getString("BOOK_CATEGORY"),
+                rs.getString("BOOK_DESCRIPTION"), // Correct mapping
+                rs.getDouble("BOOK_PRICE"),
+                rs.getInt("BOOK_QUANTITY"),
+                rs.getString("BOOK_IMAGE_PATH")
+        );
+    }
+
+    // Helper to close resources (You were missing this!)
+    private void closeResources(ResultSet rs, Statement stmt, Connection con) {
+        try { if (rs != null) rs.close(); } catch (Exception e) {}
+        try { if (stmt != null) stmt.close(); } catch (Exception e) {}
+        try { if (con != null) con.close(); } catch (Exception e) {}
     }
 
     public List<BookInfo> getBooksForCatalogue() {
@@ -238,134 +298,4 @@ public class BookDAO {
         return books;
     }
 }
-
-
-
-//ORACLE
-/*
-public class BookDAO {
-
-    // 1. CREATE: Optimized for Oracle Identity/Trigger
-    public boolean addBook(BookInfo book) {
-        String sql = "INSERT INTO BOOKS (BOOK_TITLE, BOOK_SYNOPSIS, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH) VALUES (?, ?, ?, ?, ?)";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, book.getTitle());
-            pstmt.setString(2, book.getSynopsis());
-            pstmt.setDouble(3, book.getPrice());
-            pstmt.setInt(4, book.getQuantity());
-            pstmt.setString(5, book.getImagePath());
-
-            int rowsAffected = pstmt.executeUpdate();
-
-            // CRITICAL FOR ORACLE: Manual commit if AutoCommit is disabled
-            if (rowsAffected > 0 && !conn.getAutoCommit()) {
-                conn.commit();
-            }
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            System.err.println("Oracle Insert Error: " + e.getMessage());
-            return false;
-        }
-    }
-
-    // 2. READ: Uses UPPERCASE labels to match Oracle metadata
-    public List<BookInfo> getAllBooks() {
-        List<BookInfo> books = new ArrayList<>();
-        String sql = "SELECT * FROM BOOKS ORDER BY BOOK_ID DESC";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            while (rs.next()) {
-                books.add(new BookInfo(
-                        rs.getInt("BOOK_ID"),           // Oracle defaults to UPPERCASE
-                        rs.getString("BOOK_TITLE"),
-                        rs.getString("BOOK_SYNOPSIS"),
-                        rs.getDouble("BOOK_PRICE"),
-                        rs.getInt("BOOK_QUANTITY"),
-                        rs.getString("BOOK_IMAGE_PATH")
-                ));
-            }
-        } catch (SQLException e) {
-            System.err.println("Oracle Fetch Error: " + e.getMessage());
-        }
-        return books;
-    }
-
-    // 3. UPDATE: Fixed for Oracle case sensitivity
-    public boolean updateBook(BookInfo book) {
-        String sql = "UPDATE BOOKS SET BOOK_TITLE = ?, BOOK_SYNOPSIS = ?, BOOK_PRICE = ?, BOOK_QUANTITY = ?, BOOK_IMAGE_PATH = ? WHERE BOOK_ID = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, book.getTitle());
-            pstmt.setString(2, book.getSynopsis());
-            pstmt.setDouble(3, book.getPrice());
-            pstmt.setInt(4, book.getQuantity());
-            pstmt.setString(5, book.getImagePath());
-            pstmt.setInt(6, book.getId());
-
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected > 0 && !conn.getAutoCommit()) {
-                conn.commit();
-            }
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            System.err.println("Oracle Update Error: " + e.getMessage());
-            return false;
-        }
-    }
-
-    // 4. DELETE
-    public boolean deleteBook(int id) {
-        String sql = "DELETE FROM BOOKS WHERE BOOK_ID = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, id);
-            int rowsAffected = pstmt.executeUpdate();
-
-            if (rowsAffected > 0 && !conn.getAutoCommit()) {
-                conn.commit();
-            }
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            System.err.println("Oracle Delete Error: " + e.getMessage());
-            return false;
-        }
-    }
-
-    // 5. GET SINGLE BOOK
-    public BookInfo getBookById(int id) {
-        String sql = "SELECT * FROM BOOKS WHERE BOOK_ID = ?";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, id);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    return new BookInfo(
-                            rs.getInt("BOOK_ID"),
-                            rs.getString("BOOK_TITLE"),
-                            rs.getString("BOOK_SYNOPSIS"),
-                            rs.getDouble("BOOK_PRICE"),
-                            rs.getInt("BOOK_QUANTITY"),
-                            rs.getString("BOOK_IMAGE_PATH")
-                    );
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Oracle ID Fetch Error: " + e.getMessage());
-        }
-        return null;
-    }
-}
-
- */
+//testing
