@@ -2,10 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
     <meta charset="UTF-8">
     <title>Login | NovelNest</title>
+
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/pages/user/login.css">
 </head>
 
@@ -15,7 +15,6 @@
 <div class="login-card">
     <h2>Login</h2>
 
-    <%-- Display error message if the Servlet sets the "error" attribute --%>
     <% if (request.getAttribute("error") != null) { %>
     <div class="error-msg">
         <%= request.getAttribute("error") %>

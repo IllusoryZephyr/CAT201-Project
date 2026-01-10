@@ -31,6 +31,13 @@
     <div class="nav-actions">
         <div class="icon-group">
 
+            <%-- New Admin Dashboard Button --%>
+            <% if (showAdminLink) { %>
+            <a href="${pageContext.request.contextPath}/resources/pages/user/adminDashboard.jsp" class="icon-btn admin-btn" title="Admin Dashboard">
+                <i class="fas fa-user-shield"></i>
+            </a>
+            <% } %>
+
             <a href="${pageContext.request.contextPath}/resources/pages/cart/Cart.jsp" class="icon-btn cart-btn">
                 <i class="fas fa-shopping-cart"></i>
             </a>
@@ -42,13 +49,6 @@
             <% } else { %>
             <a href="${pageContext.request.contextPath}/resources/pages/user/login.jsp" class="icon-btn profile-btn" title="Login">
                 <i class="fas fa-user"></i>
-            </a>
-            <% } %>
-
-            <%-- New Admin Dashboard Button --%>
-            <% if (showAdminLink) { %>
-            <a href="${pageContext.request.contextPath}/resources/pages/user/adminDashboard.jsp" class="icon-btn admin-btn" title="Admin Dashboard">
-                <i class="fas fa-user-shield"></i>
             </a>
             <% } %>
 

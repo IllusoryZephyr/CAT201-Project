@@ -1,0 +1,86 @@
+/* General reset and font */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    color: #333;
+}
+
+.admin-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Header Styling */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Content Box */
+.content-box {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.table-header h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.table-header p {
+    font-size: 0.9em;
+    color: #7f8c8d;
+}
+
+/* Table Styling */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.user-table th {
+    background-color: #f8f9fa;
+    color: #7f8c8d;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    padding: 15px;
+    border-bottom: 2px solid #edf2f7;
+    text-align: left;
+}
+
+.user-table td {
+    padding: 15px;
+    border-bottom: 1px solid #edf2f7;
+    transition: background 0.2s;
+}
+
+.user-table tr:hover td {
+    background-color: #f1faff;
+    cursor: pointer;
+}
+
+/* Role Badges */
+.role-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.role-badge.admin {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.role-badge.user {
+    background-color: #e0e7ff;
+    color: #3730a3;
+}

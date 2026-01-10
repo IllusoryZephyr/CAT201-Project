@@ -7,12 +7,16 @@
 %>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>User Profile</title>
+
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/pages/user/profile.css">
 </head>
 <body>
+
+<jsp:include page="../../common/navbar/navbar.jsp" />
 
 <div class="profile-container">
     <h2>User Profile</h2>
@@ -26,7 +30,9 @@
     <hr>
 
     <div class="actions">
-        <a href="editUser.jsp" class="btn btn-edit">Edit Profile</a>
+        <a href="editUserName.jsp" class="btn btn-edit">Edit User Name</a>
+
+        <a href="editUserPassword.jsp" class="btn btn-edit">Edit User Password</a>
 
         <form action="${pageContext.request.contextPath}/UserServlet" method="post">
             <input type="hidden" name="action" value="logout">
@@ -39,6 +45,8 @@
         </form>
     </div>
 </div>
+
+<jsp:include page="../../common/footer/footer.jsp" />
 
 </body>
 </html>
