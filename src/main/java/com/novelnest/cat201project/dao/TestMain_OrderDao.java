@@ -7,7 +7,6 @@ public class TestMain_OrderDao {
 
     public static void main(String[] args) {
         System.out.println("=== STARTING BACKEND TEST ===");
-
         // 1. Simulate a User Session: Create a Cart
         Cart myCart = new Cart();
         System.out.println("Step 1: Cart created.");
@@ -15,8 +14,8 @@ public class TestMain_OrderDao {
         // 2. Simulate Adding Books to Cart
         // Note: We are manually creating books here because we don't have the Catalog module yet.
         // Constructor: ID, Title, Synopsis, Price, Quantity (Stock), ImagePath
-        BookInfo book1 = new BookInfo(101, "Java Programming", "John Doe", "Education", "Learn Java", 50.00, 10, "images/java.jpg");
-        BookInfo book2 = new BookInfo(102, "Oracle SQL", "Jane Doe", "Education", "Master Database", 30.00, 5, "images/sql.jpg");
+        BookInfo book1 = new BookInfo(1, "Java Programming", "John Doe", "Education", "Learn Java", 50.00, 10, "images/java.jpg");
+        BookInfo book2 = new BookInfo(2, "Oracle SQL", "Jane Doe", "Education", "Master Database", 30.00, 5, "images/sql.jpg");
 
         // Add 1 copy of Java and 2 copies of SQL
         myCart.addItem(book1, 1);
@@ -26,7 +25,7 @@ public class TestMain_OrderDao {
         System.out.println("   - Total Price Calculated by Logic: RM " + myCart.grandTotal());
 
         // 3. Define Test Data for Checkout
-        int testUserId = 999; // Using a dummy ID since we don't have a Users table linked yet
+        int testUserId = 1; // Using a dummy ID since we don't have a Users table linked yet
         String testAddress = "123 Test Street, Penang, Malaysia";
 
         // 4. CALL THE DAO (The Real Test)

@@ -22,8 +22,8 @@ public class OrderDao {
 
             // STEP A: save THE MAIN ORDER
             // Order ID is not inserted because it is automatically generated already
-            //(old version) String sqlOrder = "INSERT INTO ORDERS (USER_ID, TOTAL_AMOUNT, SHIPPING_ADDRESS, ORDER_STATUS) VALUES (?, ?, ?, 'Pending')";
-            String sqlOrder = "INSERT INTO ORDERS_TB (ORDER_ID, USER_ID, TOTAL_AMOUNT, SHIPPING_ADDRESS, ORDER_STATUS) VALUES (ORDER_ID_SEQ.NEXTVAL, ?, ?, ?, 'Pending')";
+             String sqlOrder = "INSERT INTO ORDER_TB (USER_ID, TOTAL_AMOUNT, SHIPPING_ADDRESS, ORDER_STATUS) VALUES (?, ?, ?, 'Pending')";
+            //String sqlOrder = "INSERT INTO ORDER_TB (ORDER_ID, USER_ID, TOTAL_AMOUNT, SHIPPING_ADDRESS, ORDER_STATUS) VALUES (ORDER_ID_SEQ.NEXTVAL, ?, ?, ?, 'Pending')";
 
             //  "new String[]{"ORDER_ID"}" tells Oracle to return the generated value of ORDER_ID
             psOrder = con.prepareStatement(sqlOrder, new String[]{"ORDER_ID"}); //"ORDER_ID" is the name of the primary key column
