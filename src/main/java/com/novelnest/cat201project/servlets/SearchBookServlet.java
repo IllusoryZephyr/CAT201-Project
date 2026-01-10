@@ -29,13 +29,13 @@ public class SearchBookServlet extends HttpServlet {
         // Determine search type based on parameters provided
         if (query != null && !query.trim().isEmpty()) {
             // Search by title
-            books = dao.searchBooks(query.trim());
+            books = dao.searchBooksForCatalogue(query.trim());
         } else if (category != null && !category.trim().isEmpty()) {
             // Filter by category
-            books = dao.filterBooksByCategory(category.trim());
+            books = dao.filterBooksByCategoryForCatalogue(category.trim());
         } else {
             // No search criteria - return all books
-            books = dao.getAllBooks();
+            books = dao.getBooksForCatalogue();
         }
 
         // Set the books list as request attribute for the JSP
@@ -43,7 +43,7 @@ public class SearchBookServlet extends HttpServlet {
         request.setAttribute("searchQuery", query);
         request.setAttribute("selectedCategory", category);
 
-        // Forward to the JSP page to display results
-        request.getRequestDispatcher("/resources/pages/Book/viewBook.jsp").forward(request, response);
+        // Forward to the catalogue JSP page to display results
+        request.getRequestDispatcher("/resources/pages/Book/catalogue.jsp").forward(request, response);
     }
 }
