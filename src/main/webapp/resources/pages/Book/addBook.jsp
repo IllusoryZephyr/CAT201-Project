@@ -4,7 +4,7 @@
     <title>NovelNest - Add New Book</title>
     <link rel="stylesheet" type="text/css" href="addBook.css">
     <script>const contextPath = "${pageContext.request.contextPath}";</script>
-    <script src="${pageContext.request.contextPath}/resources/js/bookFunction.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/pages/Book/bookFunction.js"></script>
 </head>
 <body>
 <div class="container">

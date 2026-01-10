@@ -8,6 +8,8 @@
     <title>Checkout - NovelNest</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="checkout.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/common/footer/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/common/navbar/navbar.css">
     <script src="checkoutValidation.js"></script>
 
     <script>
@@ -15,7 +17,7 @@
     </script>
 </head>
 <body>
-
+<jsp:include page="/resources/common/navbar/navbar.jsp" />
 <div class="container">
     <h2>Checkout</h2>
 

@@ -6,6 +6,7 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/resources/common/footer/footer.jsp" value="file://$PROJECT_DIR$/src/main/webapp/resources/common/footer" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/resources/common/navbar/navbar.jsp" value="file://$PROJECT_DIR$/src/main/webapp/resources/common/navbar" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/resources/pages/cart/Cart.jsp" value="file://$PROJECT_DIR$/src/main/webapp/resources/pages/cart" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/resources/pages/home/Main.jsp" value="file://$PROJECT_DIR$/src/main/webapp/resources/pages/home" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/resources/pages/home/home.jsp" value="file://$PROJECT_DIR$/src/main/webapp/resources/pages/home" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/resources/pages/user/adminEditUser.jsp" value="file://$PROJECT_DIR$/src/main/webapp/resources/pages/user" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/resources/pages/user/editUser.jsp" value="file://$PROJECT_DIR$/src/main/webapp/resources/pages/user" />

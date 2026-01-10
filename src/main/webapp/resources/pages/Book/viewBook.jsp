@@ -121,8 +121,7 @@
 <script>
     const contextPath = "${pageContext.request.contextPath}";
 </script>
-<script src="${pageContext.request.contextPath}/bookFunction.js"></script>
+<script src="${pageContext.request.contextPath}/resources/pages/Book/bookFunction.js"></script>
 
 </body>
 </html>
-//testing

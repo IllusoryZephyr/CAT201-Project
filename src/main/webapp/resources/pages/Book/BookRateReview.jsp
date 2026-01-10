@@ -11,7 +11,7 @@
         .avg-score { font-weight: bold; color: #f39c12; }
     </style>
     <link rel="stylesheet" type="text/css" href="BookRateReview.css">
-    <script src="${pageContext.request.contextPath}/bookFunction.js" defer></script>
+    <script src="${pageContext.request.contextPath}/resources/pages/Book/bookFunction.js" defer></script>
 </head>
 <body>
 
@@ -23,7 +23,7 @@
     <form id="reviewForm" action="${pageContext.request.contextPath}/submitReview" method="post">
 
         <%
-            // Get ID from URL, default to 2 if missing (prevents "null" string)
+            // Get ID from  URL, default to 2 if missing (prevents "null" string)
             String currentBookId = request.getParameter("id");
             if (currentBookId == null || currentBookId.isEmpty()) {
                 currentBookId = "2";

@@ -76,7 +76,7 @@
     </form>
 </div>
 
-<script src="${pageContext.request.contextPath}/resources/js/bookFunction.js"></script>
+<script src="${pageContext.request.contextPath}/resources/pages/Book/bookFunction.js"></script>
 
 </body>
 </html>

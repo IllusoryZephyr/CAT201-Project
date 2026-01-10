@@ -25,7 +25,7 @@ public class TestMain_OrderDao {
         System.out.println("   - Total Price Calculated by Logic: RM " + myCart.grandTotal());
 
         // 3. Define Test Data for Checkout
-        int testUserId = 1; // Using a dummy ID since we don't have a Users table linked yet
+        int testUserId = 9; // Using a dummy ID since we don't have a Users table linked yet
         String testAddress = "123 Test Street, Penang, Malaysia";
 
         // 4. CALL THE DAO (The Real Test)

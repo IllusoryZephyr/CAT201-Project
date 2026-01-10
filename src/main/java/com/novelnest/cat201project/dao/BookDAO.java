@@ -215,10 +215,37 @@ public class BookDAO {
         try { if (con != null) con.close(); } catch (Exception e) {}
     }
 
-    // Search: Based on user input title
-    public List<BookInfo> searchBooks(String titleInput) {
+    public List<BookInfo> getBooksForCatalogue() {
         List<BookInfo> books = new ArrayList<>();
-        String query = "SELECT * FROM books WHERE title LIKE ?";
+        String sql = "SELECT BOOK_ID, BOOK_TITLE, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM BOOKS";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                BookInfo book = new BookInfo(
+                        rs.getInt("BOOK_ID"),
+                        rs.getString("BOOK_TITLE"),
+                        "", // author not needed for catalogue
+                        rs.getString("BOOK_CATEGORY"),
+                        "", // synopsis not needed for catalogue
+                        rs.getDouble("BOOK_PRICE"),
+                        rs.getInt("BOOK_QUANTITY"),
+                        rs.getString("BOOK_IMAGE_PATH"));
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching books for catalogue: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return books;
+    }
+
+    // Search books by title for catalogue display
+    public List<BookInfo> searchBooksForCatalogue(String titleInput) {
+        List<BookInfo> books = new ArrayList<>();
+        String query = "SELECT BOOK_ID, BOOK_TITLE, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM books WHERE BOOK_TITLE LIKE ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -229,9 +256,9 @@ public class BookDAO {
                     books.add(new BookInfo(
                             rs.getInt("BOOK_ID"),
                             rs.getString("BOOK_TITLE"),
-                            rs.getString("BOOK_AUTHOR"),
+                            "",
                             rs.getString("BOOK_CATEGORY"),
-                            rs.getString("BOOK_SYNOPSIS"),
+                            "",
                             rs.getDouble("BOOK_PRICE"),
                             rs.getInt("BOOK_QUANTITY"),
                             rs.getString("BOOK_IMAGE_PATH")));
@@ -243,10 +270,10 @@ public class BookDAO {
         return books;
     }
 
-    // Filter: Based on categories
-    public List<BookInfo> filterBooksByCategory(String category) {
+    // Filter books by category for catalogue display
+    public List<BookInfo> filterBooksByCategoryForCatalogue(String category) {
         List<BookInfo> books = new ArrayList<>();
-        String query = "SELECT * FROM books WHERE category = ?";
+        String query = "SELECT BOOK_ID, BOOK_TITLE, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM books WHERE BOOK_CATEGORY = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -257,9 +284,9 @@ public class BookDAO {
                     books.add(new BookInfo(
                             rs.getInt("BOOK_ID"),
                             rs.getString("BOOK_TITLE"),
-                            rs.getString("BOOK_AUTHOR"),
+                            "",
                             rs.getString("BOOK_CATEGORY"),
-                            rs.getString("BOOK_SYNOPSIS"),
+                            "",
                             rs.getDouble("BOOK_PRICE"),
                             rs.getInt("BOOK_QUANTITY"),
                             rs.getString("BOOK_IMAGE_PATH")));
