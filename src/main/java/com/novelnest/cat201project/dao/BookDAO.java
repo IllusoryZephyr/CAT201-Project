@@ -137,36 +137,61 @@ public class BookDAO {
         return success;
     }
 
-    // 5. DELETE
     public boolean deleteBook(int id) {
         Connection con = null;
-        PreparedStatement ps = null;
-        boolean success = false;
-        String sql = "DELETE FROM HR.BOOK_TB WHERE BOOK_ID = ?";
+        PreparedStatement psBook = null;
+        PreparedStatement psReview = null;
+        boolean isDeleted = false;
 
         try {
             con = DatabaseConnection.getConnection();
-            con.setAutoCommit(false);
+            con.setAutoCommit(false); // 1. Start Transaction
 
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
+            // ---------------------------------------------------------
+            // STEP A: Delete Reviews (Check table name!)
+            // If your book table is HR.BOOK_TB, your review table is likely HR.REVIEWS or HR.REVIEW_TB
+            // ---------------------------------------------------------
+            String deleteReviewsSql = "DELETE FROM HR.REVIEWS WHERE BOOK_ID = ?";
+            psReview = con.prepareStatement(deleteReviewsSql);
+            psReview.setInt(1, id);
+            psReview.executeUpdate();
 
-            int rows = ps.executeUpdate();
-            if (rows > 0) {
-                con.commit();
-                success = true;
+            // ---------------------------------------------------------
+            // STEP B: Delete Book (MUST MATCH YOUR getAllBooks NAME)
+            // Fixed: Added "HR." prefix
+            // ---------------------------------------------------------
+            String deleteBookSql = "DELETE FROM HR.BOOK_TB WHERE BOOK_ID = ?";
+            psBook = con.prepareStatement(deleteBookSql);
+            psBook.setInt(1, id);
+
+            int rowsAffected = psBook.executeUpdate();
+
+            if (rowsAffected > 0) {
+                isDeleted = true;
+                con.commit(); // 2. Commit if successful
+                System.out.println("DEBUG: Book deleted successfully.");
             } else {
-                con.rollback();
+                con.rollback(); // Rollback if book not found
+                System.out.println("DEBUG: Book ID not found.");
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            try { if (con != null) con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
-        } finally {
-            closeResources(null, ps, con);
-        }
-        return success;
-    }
 
+        } catch (SQLException e) {
+            // 3. Rollback on Error
+            try { if (con != null) con.rollback(); } catch (SQLException ex) {}
+
+            System.out.println("DEBUG ERROR: " + e.getMessage());
+            e.printStackTrace(); // Check this if it still fails!
+        } finally {
+            // 4. Close Resources
+            // Since you have a helper method 'closeResources', you can use it here too:
+            // closeResources(null, psBook, null);
+            // But manual closing is fine too:
+            try { if (psReview != null) psReview.close(); } catch (Exception e) {}
+            try { if (psBook != null) psBook.close(); } catch (Exception e) {}
+            try { if (con != null) con.close(); } catch (Exception e) {}
+        }
+        return isDeleted;
+    }
     // --- HELPER METHODS ---
 
     // Helper method to map results
