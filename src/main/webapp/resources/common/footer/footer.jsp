@@ -2,7 +2,7 @@
 <%@ page import="java.time.Year" %>
 
 <footer class="footer_container">
-    <h3>Code Wizards</h3>
+    <h3>Novel Nest</h3>
 
     <div class="footer_info">
         <p>Contact us: 014-2794360</p>
