@@ -1,9 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    Integer navUserId = (Integer) session.getAttribute("userId");
+    Integer navUserId = (Integer) session.getAttribute("user_id");
+    // Retrieve the admin status from the session
+    Boolean isAdmin = (Boolean) session.getAttribute("user_is_admin");
+
     boolean isLoggedIn = (navUserId != null);
+    // Ensure isAdmin is not null before checking value
+    boolean showAdminLink = (isAdmin != null && isAdmin);
 %>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/common/navbar/navbar.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <nav class="navbar">
@@ -36,6 +42,13 @@
             <% } else { %>
             <a href="${pageContext.request.contextPath}/resources/pages/user/login.jsp" class="icon-btn profile-btn" title="Login">
                 <i class="fas fa-user"></i>
+            </a>
+            <% } %>
+
+            <%-- New Admin Dashboard Button --%>
+            <% if (showAdminLink) { %>
+            <a href="${pageContext.request.contextPath}/resources/pages/user/adminDashboard.jsp" class="icon-btn admin-btn" title="Admin Dashboard">
+                <i class="fas fa-user-shield"></i>
             </a>
             <% } %>
 

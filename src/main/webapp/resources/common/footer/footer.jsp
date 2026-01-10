@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.time.Year" %>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/common/footer/footer.css">
+
 <footer class="footer_container">
     <h3>Code Wizards</h3>
 
