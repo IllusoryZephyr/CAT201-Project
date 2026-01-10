@@ -22,13 +22,15 @@ public class UpdateBookServlet extends HttpServlet {
             // 1. Get data from the form
             int id = Integer.parseInt(request.getParameter("id"));
             String title = request.getParameter("title");
+            String author = request.getParameter("author");
+            String category = request.getParameter("category");
             String synopsis = request.getParameter("synopsis");
             double price = Double.parseDouble(request.getParameter("price"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             String imagePath = request.getParameter("imagePath");
 
             // 2. Create a BookInfo object
-            BookInfo book = new BookInfo(id, title, synopsis, price, quantity, imagePath);
+            BookInfo book = new BookInfo(id, title, author, category, synopsis, price, quantity, imagePath);
 
             // 3. Call DAO to update
             BookDAO dao = new BookDAO();

@@ -21,6 +21,8 @@ public class AddBookServlet extends HttpServlet {
         try {
             // 1. Get data from form
             String title = request.getParameter("title");
+            String author = request.getParameter("author");
+            String category = request.getParameter("category");
             String synopsis = request.getParameter("synopsis");
 
             // Validate inputs aren't null or empty before parsing
@@ -37,7 +39,7 @@ public class AddBookServlet extends HttpServlet {
             String imagePath = request.getParameter("imagePath");
 
             // 2. Create Object (ID 0 is fine for Oracle Identity)
-            BookInfo newBook = new BookInfo(0, title, synopsis, price, quantity, imagePath);
+            BookInfo newBook = new BookInfo(0, title, author, category, synopsis, price, quantity, imagePath);
 
             // 3. Save to DB
 // 3. Save to DB

@@ -22,9 +22,10 @@ public class OrderDao {
 
             // STEP A: save THE MAIN ORDER
             // Order ID is not inserted because it is automatically generated already
-            String sqlOrder = "INSERT INTO ORDERS (USER_ID, TOTAL_AMOUNT, SHIPPING_ADDRESS, ORDER_STATUS) VALUES (?, ?, ?, 'Pending')";
+            //(old version) String sqlOrder = "INSERT INTO ORDERS (USER_ID, TOTAL_AMOUNT, SHIPPING_ADDRESS, ORDER_STATUS) VALUES (?, ?, ?, 'Pending')";
+            String sqlOrder = "INSERT INTO ORDERS_TB (ORDER_ID, USER_ID, TOTAL_AMOUNT, SHIPPING_ADDRESS, ORDER_STATUS) VALUES (ORDER_ID_SEQ.NEXTVAL, ?, ?, ?, 'Pending')";
 
-            // IMPORTANT: "new String[]{"ORDER_ID"}" tells Oracle to return the generated value of ORDER_ID
+            //  "new String[]{"ORDER_ID"}" tells Oracle to return the generated value of ORDER_ID
             psOrder = con.prepareStatement(sqlOrder, new String[]{"ORDER_ID"}); //"ORDER_ID" is the name of the primary key column
 
             psOrder.setInt(1, userId);
@@ -36,7 +37,7 @@ public class OrderDao {
                 throw new SQLException("Creating order failed, no rows affected.");
             }
 
-            // STEP B: GET THE GENERATED ORDER ID
+            // get the generated order id
             rs = psOrder.getGeneratedKeys();
             if (rs.next()) {
                 generatedOrderId = rs.getInt(1); // This is the ID from the Sequence
@@ -44,8 +45,8 @@ public class OrderDao {
                 throw new SQLException("Creating order failed, no ID obtained.");
             }
 
-            // STEP C: save THE ORDER DETAILS
-            String sqlDetail = "INSERT INTO ORDER_DETAILS (ORDER_ID, BOOK_ID, QUANTITY, PRICE_AT_PURCHASE) VALUES (?, ?, ?, ?)";
+            //  save THE ORDER DETAILS
+            String sqlDetail = "INSERT INTO ORDER_DETAILS_TB (ORDER_ID, BOOK_ID, QUANTITY, PRICE_AT_PURCHASE) VALUES (?, ?, ?, ?)";
             psDetail = con.prepareStatement(sqlDetail);
 
             for (CartItem item : cart.getItems()) {
@@ -60,7 +61,7 @@ public class OrderDao {
             // Execute all detail inserts at once
             psDetail.executeBatch();
 
-            // STEP D: COMMIT (SAVE EVERYTHING)
+            //  save everything(commit)
             con.commit();
             System.out.println("Order saved successfully! ID: " + generatedOrderId);
 

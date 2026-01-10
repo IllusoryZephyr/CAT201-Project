@@ -15,8 +15,8 @@ public class TestMain_OrderDao {
         // 2. Simulate Adding Books to Cart
         // Note: We are manually creating books here because we don't have the Catalog module yet.
         // Constructor: ID, Title, Synopsis, Price, Quantity (Stock), ImagePath
-        BookInfo book1 = new BookInfo(101, "Java Programming", "Learn Java", 50.00, 10, "images/java.jpg");
-        BookInfo book2 = new BookInfo(102, "Oracle SQL", "Master Database", 30.00, 5, "images/sql.jpg");
+        BookInfo book1 = new BookInfo(101, "Java Programming", "John Doe", "Education", "Learn Java", 50.00, 10, "images/java.jpg");
+        BookInfo book2 = new BookInfo(102, "Oracle SQL", "Jane Doe", "Education", "Master Database", 30.00, 5, "images/sql.jpg");
 
         // Add 1 copy of Java and 2 copies of SQL
         myCart.addItem(book1, 1);

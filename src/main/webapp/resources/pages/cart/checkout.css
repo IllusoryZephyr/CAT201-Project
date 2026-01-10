@@ -1,0 +1,153 @@
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1000px;
+    width: 95%;
+    margin: 40px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+h2 {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.checkout-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start; /* Aligns tops of columns */
+}
+
+.summary, .form-section {
+    flex: 1; /* Both take equal width */
+}
+
+/* Order summary */
+
+.summary table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.summary td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    font-size: 0.95rem;
+}
+
+.summary tr:last-child td {
+    border-bottom: none;
+}
+
+.summary strong {
+    color: #555;
+}
+
+/* Form */
+
+label {
+    font-weight: 600;
+    display: block;
+    margin-bottom: 8px;
+    color: #444;
+}
+
+textarea, select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    transition: border-color 0.3s;
+}
+
+textarea:focus, select:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0,123,255,0.2);
+}
+
+textarea {
+    resize: vertical; /* Allows user to drag height only */
+}
+
+/* button */
+.btn {
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-secondary, a.btn {
+    background-color: #6c757d;
+    color: white;
+}
+.btn-secondary:hover, a.btn:hover {
+    background-color: #5a6268;
+}
+
+button[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    font-weight: bold;
+    width: 50%;
+}
+button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* Mobile view */
+@media screen and (max-width: 768px) {
+    .checkout-layout {
+        flex-direction: column-reverse;
+        gap: 30px;
+    }
+
+    .summary, .form-section {
+        width: 100%;
+    }
+
+    button[type="submit"], a.btn {
+        width: 100%; /* Full width buttons on phone */
+        margin-bottom: 10px;
+    }
+
+    .button-group {
+        flex-direction: column-reverse; /* Stack buttons */
+        gap: 10px;
+    }
+}
