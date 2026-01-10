@@ -40,9 +40,13 @@ public class AddBookServlet extends HttpServlet {
             BookInfo newBook = new BookInfo(0, title, synopsis, price, quantity, imagePath);
 
             // 3. Save to DB
+// 3. Save to DB
             BookDAO dao = new BookDAO();
-            if (dao.addBook(newBook)) {
-                response.sendRedirect(request.getContextPath() + "/resources/pages/Book/viewBook.jsp");
+            int newBookId = dao.addBook(newBook); // Now returns the new ID
+
+            if (newBookId != -1) {
+                // SUCCESS: Pass the ID to the JSP
+                response.sendRedirect(request.getContextPath() + "/resources/pages/Book/viewBook.jsp?id=" + newBookId);
             } else {
                 response.getWriter().println("Error adding book to Oracle database!");
             }
