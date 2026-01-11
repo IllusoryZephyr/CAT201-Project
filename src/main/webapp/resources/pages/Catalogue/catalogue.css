@@ -277,8 +277,8 @@ body {
 /* Book Footer */
 .book-footer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column; /* This forces everything to stack vertically */
+    gap: 12px;
     margin-top: auto;
     padding-top: 15px;
     border-top: 1px solid #ecf0f1;
@@ -286,7 +286,9 @@ body {
 
 .book-price {
     display: flex;
+    justify-content: space-between;
     flex-direction: column;
+    margin-bottom: 5px;
 }
 
 .price-label {
@@ -324,6 +326,25 @@ body {
     gap: 6px;
     width: 100%;
     min-width: 120px;
+}
+
+.btn-review {
+    width: 100%;        /* Make buttons fill the card width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-review:hover {
+    background-color: #138496;
 }
 
 .btn-add-cart:hover {
