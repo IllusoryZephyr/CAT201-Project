@@ -36,15 +36,16 @@
             <div class="book-image-container">
                 <%
                     String imgPath = singleBook.getImagePath();
-                    // Fallback if no image is set
-                    if (imgPath == null || imgPath.isEmpty()) {
-                        imgPath = "images/default_book.png";
+                    String defaultImage = "images/default_book.png";
+
+                    // Java 检查：如果数据库为空，使用默认图
+                    if (imgPath == null || imgPath.trim().isEmpty()) {
+                        imgPath = defaultImage;
                     }
-                %>
-                <img src="${pageContext.request.contextPath}/<%= imgPath %>"
-                     alt="<%= singleBook.getTitle() %>"
-                     style="width: 200px; height: 300px; object-fit: cover; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);"
-                     onerror="this.src='https://via.placeholder.com/200x300?text=No+Cover'">
+                %> <img src="${pageContext.request.contextPath}/<%= imgPath %>"
+                        alt="<%= singleBook.getTitle() %>"
+                        style="width: 200px; height: 300px; object-fit: cover; border-radius: 5px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);"
+                        onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/<%= defaultImage %>';">
             </div>
 
             <div class="book-info-container" style="flex: 1;">
