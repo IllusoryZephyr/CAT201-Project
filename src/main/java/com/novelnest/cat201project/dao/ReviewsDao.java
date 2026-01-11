@@ -11,7 +11,7 @@ public class ReviewsDao {
         Connection con = null;
         PreparedStatement ps = null;
         boolean success = false;
-        String sql = "INSERT INTO HR.REVIEW_TB (USER_ID, BOOK_ID, REVIEW_TITLE, REVIEW_RATING, REVIEW_DESCRIPTION, REVIEW_CREATION_DATE) VALUES (?, ?, ?, ?, ?, SYSTIMESTAMP)";
+        String sql = "INSERT INTO REVIEW_TB (USER_ID, BOOK_ID, REVIEW_TITLE, REVIEW_RATING, REVIEW_DESCRIPTION, REVIEW_CREATION_DATE) VALUES (?, ?, ?, ?, ?, SYSTIMESTAMP)";
         try {
             con = DatabaseConnection.getConnection();
             con.setAutoCommit(false); // Manual commit
@@ -49,7 +49,7 @@ public class ReviewsDao {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT * FROM HR.REVIEW_TB WHERE BOOK_ID = ? ORDER BY REVIEW_CREATION_DATE DESC";
+        String sql = "SELECT * FROM REVIEW_TB WHERE BOOK_ID = ? ORDER BY REVIEW_CREATION_DATE DESC";
 
         try {
             con = DatabaseConnection.getConnection();
@@ -84,7 +84,7 @@ public class ReviewsDao {
         double average = 0.0;
 
         // Oracle's AVG function handles the math. COALESCE/NVL can default to 0 if no reviews exist.
-        String sql = "SELECT AVG(REVIEW_RATING) FROM HR.REVIEW_TB WHERE BOOK_ID = ?";
+        String sql = "SELECT AVG(REVIEW_RATING) FROM REVIEW_TB WHERE BOOK_ID = ?";
         try {
             con = DatabaseConnection.getConnection();
             ps = con.prepareStatement(sql);

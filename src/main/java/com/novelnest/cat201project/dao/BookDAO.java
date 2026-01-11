@@ -14,7 +14,7 @@ public class BookDAO {
         ResultSet rs = null;
         int generatedId = -1;
 
-        String sql = "INSERT INTO HR.BOOK_TB (BOOK_ID, BOOK_TITLE, BOOK_AUTHOR, BOOK_CATEGORY, BOOK_DESCRIPTION, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH) " +
+        String sql = "INSERT INTO BOOK_TB (BOOK_ID, BOOK_TITLE, BOOK_AUTHOR, BOOK_CATEGORY, BOOK_DESCRIPTION, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH) " +
                 "VALUES (HR.BOOK_ID_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
         try {
             con = DatabaseConnection.getConnection();
@@ -56,7 +56,7 @@ public class BookDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT * FROM HR.BOOK_TB ORDER BY BOOK_ID";
+        String sql = "SELECT * FROM BOOK_TB ORDER BY BOOK_ID";
 
         try {
             con = DatabaseConnection.getConnection();
@@ -80,7 +80,7 @@ public class BookDAO {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT * FROM HR.BOOK_TB WHERE BOOK_ID = ?";
+        String sql = "SELECT * FROM BOOK_TB WHERE BOOK_ID = ?";
 
         try {
             con = DatabaseConnection.getConnection();
@@ -105,7 +105,7 @@ public class BookDAO {
         Connection con = null;
         PreparedStatement ps = null;
         boolean success = false;
-        String sql = "UPDATE HR.BOOK_TB SET BOOK_TITLE = ?, BOOK_AUTHOR=?, BOOK_CATEGORY=?, BOOK_DESCRIPTION = ?, BOOK_PRICE = ?, BOOK_QUANTITY = ?, BOOK_IMAGE_PATH = ? WHERE BOOK_ID = ?";
+        String sql = "UPDATE BOOK_TB SET BOOK_TITLE = ?, BOOK_AUTHOR=?, BOOK_CATEGORY=?, BOOK_DESCRIPTION = ?, BOOK_PRICE = ?, BOOK_QUANTITY = ?, BOOK_IMAGE_PATH = ? WHERE BOOK_ID = ?";
 
         try {
             con = DatabaseConnection.getConnection();
@@ -151,7 +151,7 @@ public class BookDAO {
             // STEP A: Delete Reviews (Check table name!)
             // If your book table is HR.BOOK_TB, your review table is likely HR.REVIEWS or HR.REVIEW_TB
             // ---------------------------------------------------------
-            String deleteReviewsSql = "DELETE FROM HR.REVIEWS WHERE BOOK_ID = ?";
+            String deleteReviewsSql = "DELETE FROM REVIEWS WHERE BOOK_ID = ?";
             psReview = con.prepareStatement(deleteReviewsSql);
             psReview.setInt(1, id);
             psReview.executeUpdate();
@@ -160,7 +160,7 @@ public class BookDAO {
             // STEP B: Delete Book (MUST MATCH YOUR getAllBooks NAME)
             // Fixed: Added "HR." prefix
             // ---------------------------------------------------------
-            String deleteBookSql = "DELETE FROM HR.BOOK_TB WHERE BOOK_ID = ?";
+            String deleteBookSql = "DELETE FROM BOOK_TB WHERE BOOK_ID = ?";
             psBook = con.prepareStatement(deleteBookSql);
             psBook.setInt(1, id);
 
@@ -217,7 +217,7 @@ public class BookDAO {
 
     public List<BookInfo> getBooksForCatalogue() {
         List<BookInfo> books = new ArrayList<>();
-        String sql = "SELECT BOOK_ID, BOOK_TITLE, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM BOOKS";
+        String sql = "SELECT BOOK_ID, BOOK_TITLE, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM BOOK_TB";
 
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -245,7 +245,7 @@ public class BookDAO {
     // Search books by title for catalogue display
     public List<BookInfo> searchBooksForCatalogue(String titleInput) {
         List<BookInfo> books = new ArrayList<>();
-        String query = "SELECT BOOK_ID, BOOK_TITLE, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM books WHERE BOOK_TITLE LIKE ?";
+        String query = "SELECT BOOK_ID, BOOK_TITLE, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM BOOK_TB WHERE BOOK_TITLE LIKE ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -273,7 +273,7 @@ public class BookDAO {
     // Filter books by category for catalogue display
     public List<BookInfo> filterBooksByCategoryForCatalogue(String category) {
         List<BookInfo> books = new ArrayList<>();
-        String query = "SELECT BOOK_ID, BOOK_TITLE, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM books WHERE BOOK_CATEGORY = ?";
+        String query = "SELECT BOOK_ID, BOOK_TITLE, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM BOOK_TB WHERE BOOK_CATEGORY = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
