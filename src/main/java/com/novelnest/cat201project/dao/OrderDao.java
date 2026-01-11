@@ -20,13 +20,13 @@ public class OrderDao {
             // This ensures that if saving details fails, the order is cancelled.
             con.setAutoCommit(false);
 
-            // STEP A: save THE MAIN ORDER
+
             // Order ID is not inserted because it is automatically generated already
              String sqlOrder = "INSERT INTO ORDER_TB (USER_ID, TOTAL_AMOUNT, SHIPPING_ADDRESS, ORDER_STATUS) VALUES (?, ?, ?, 'Pending')";
             //String sqlOrder = "INSERT INTO ORDER_TB (ORDER_ID, USER_ID, TOTAL_AMOUNT, SHIPPING_ADDRESS, ORDER_STATUS) VALUES (ORDER_ID_SEQ.NEXTVAL, ?, ?, ?, 'Pending')";
 
-            //  "new String[]{"ORDER_ID"}" tells Oracle to return the generated value of ORDER_ID
-            psOrder = con.prepareStatement(sqlOrder, new String[]{"ORDER_ID"}); //"ORDER_ID" is the name of the primary key column
+
+            psOrder = con.prepareStatement(sqlOrder, new String[]{"ORDER_ID"});
 
             psOrder.setInt(1, userId);
             psOrder.setDouble(2, cart.grandTotal());
@@ -67,7 +67,7 @@ public class OrderDao {
 
         } catch (SQLException e) {
             e.printStackTrace(); //print report of the method call that leads to error
-            // ROLLBACK: Undo everything if there was an error
+
             try {
                 if (con != null) {
                     con.rollback(); //undo all change
@@ -86,6 +86,6 @@ public class OrderDao {
             try { if (con != null) con.close(); } catch (Exception e) {}
         }
 
-        return generatedOrderId; //return order id
+        return generatedOrderId;
     }
 }

@@ -28,7 +28,7 @@ public class CartServlet extends HttpServlet {
             session.setAttribute("cart", cart);
         }
 
-        // Determine the Action (add, remove, or update)
+        // get action (update,remove,add)
         String action = request.getParameter("action");
 
         // If action ==null
@@ -79,14 +79,14 @@ public class CartServlet extends HttpServlet {
                 for (CartItem item : cart.getItems()) {
                     if (item.getBook().getId() == bookId) {
                         item.setQuantity(quantity); //set new quantity
-                        break; //stop looping after correct item is found
+                        break;
                     }
                 }
             }
             response.sendRedirect(request.getContextPath() + "/resources/pages/cart/Cart.jsp");
         }
 
-        // Default fallback
+
         else {
             response.sendRedirect(request.getContextPath() +"/home.jsp");
         }
