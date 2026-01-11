@@ -7,12 +7,17 @@
 
 <head>
     <title>NovelNest - Book Catalogue</title>
-    <link rel="stylesheet" type="text/css" href="catalogue.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/resources/pages/Catalogue/catalogue.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/common/navbar/navbar.css">
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 
 <body>
+
+<!--jsp:include page="/resources/common/navbar/navbar.jsp" /-->
 
 <div class="catalogue-container">
     <!-- Header Section -->
@@ -29,8 +34,8 @@
             <!-- Search Bar -->
             <div class="search-bar">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" name="query" placeholder="Search books by title..."
-                       value="<%= request.getAttribute("searchQuery") !=null ?
+                <input type="text" name="query" placeholder="Search books by title or author..."
+                       value="<%= request.getAttribute(" searchQuery") !=null ?
                                         request.getAttribute("searchQuery") : "" %>"
                        class="search-input"
                 />
@@ -110,6 +115,9 @@
                 <h3 class="book-title">
                     <%= book.getTitle() %>
                 </h3>
+                <p class="book-author"><i class="fas fa-user"></i>
+                    <%= book.getAuthor() %>
+                </p>
                 <p class="book-category"><i class="fas fa-tag"></i>
                     <%= book.getCategory() %>
                 </p>
@@ -160,6 +168,8 @@
         <% } %>
     </div>
 </div>
+
+<!--jsp:include page="../../common/footer/footer.jsp" /-->
 
 </body>
 

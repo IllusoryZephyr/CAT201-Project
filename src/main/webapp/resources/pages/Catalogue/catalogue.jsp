@@ -7,13 +7,17 @@
 
 <head>
     <title>NovelNest - Book Catalogue</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/pages/Catalogue/catalogue.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/resources/pages/Catalogue/catalogue.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/common/navbar/navbar.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
 
 <body>
 
-<jsp:include page="../../common/navbar/navbar.jsp" />
+<jsp:include page="/resources/common/navbar/navbar.jsp" />
 
 <div class="catalogue-container">
     <!-- Header Section -->
@@ -31,7 +35,7 @@
             <div class="search-bar">
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" name="query" placeholder="Search books by title or author..."
-                       value="<%= request.getAttribute("searchQuery") !=null ?
+                       value="<%= request.getAttribute(" searchQuery") !=null ?
                                         request.getAttribute("searchQuery") : "" %>"
                        class="search-input"
                 />
