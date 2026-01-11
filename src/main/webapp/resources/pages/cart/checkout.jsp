@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.novelnest.cat201project.models.Cart" %>
 <%@ page import="com.novelnest.cat201project.models.CartItem" %>
-<%@ page import="com.novelnest.cat201project.models.BookInfo" %>
 
 <html>
 <head>

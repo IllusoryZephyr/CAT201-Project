@@ -3,7 +3,7 @@
 
 <head>
     <title>Order Confirmed - NovelNest</title>
-
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/pages/cart/payConfirmation.css">
 </head>
 
 <body>
