@@ -1,4 +1,11 @@
-/* General Layout */
+:root {
+    --primary-color: #4a90e2;
+    --bg-color: #f4f7f6;
+    --text-color: #333;
+    --card-bg: #ffffff;
+    --shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background-color: #f4f7f6;
@@ -103,4 +110,41 @@ h2 {
 
 .book-table tr:hover {
     background-color: #f9f9f9;
+}
+
+.back-nav {
+    margin-bottom: 25px;
+}
+
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 18px;
+    background-color: #ffffff;
+    color: #555;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-radius: 50px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-back .arrow {
+    margin-right: 8px;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    transform: translateX(-3px);
+}
+
+.btn-back:hover .arrow {
+    transform: translateX(-3px);
 }

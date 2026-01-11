@@ -6,26 +6,11 @@
     <meta charset="UTF-8">
     <title>Sign Up | NovelNest</title>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/pages/user/signup.css">
-    <style>
-        /* Adding inline styles in case they aren't in your signup.css */
-        .hint.invalid { color: #dc3545; font-size: 0.85em; }
-        .error-box {
-            display: none;
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 15px;
-            border: 1px solid #f5c6cb;
-        }
-    </style>
 </head>
 <body>
 
 <div class="card">
     <h2 style="text-align: center; margin-top: 0;">Create Account</h2>
-
-    <div id="validation-error" class="error-box"></div>
 
     <% if (request.getAttribute("error") != null) { %>
     <div class="error-box" style="display: block;">
@@ -38,83 +23,58 @@
 
         <div class="form-group">
             <label for="user_name">Username</label>
-            <input type="text" id="user_name" name="user_name" required>
+            <input type="text" id="user_name" name="user_name" required placeholder="Enter your Username">
         </div>
 
         <div class="form-group">
             <label for="user_password">Password</label>
-            <input type="password" id="user_password" name="user_password" required>
-            <div id="passwordHint" class="hint">Must be at least 8 characters</div>
+            <input type="password" id="user_password" name="user_password"
+                   minlength="8" required placeholder="At least 8 characters">
         </div>
 
         <div class="form-group">
             <label for="confirm_password">Confirm Password</label>
-            <input type="password" id="confirm_password" name="confirm_password" required>
-            <div id="matchHint" class="hint"></div>
+            <input type="password" id="confirm_password" name="confirm_password" required placeholder="Repeat password">
+            <span id="match-error" class="validation-message"></span>
         </div>
 
-        <button type="submit" class="btn-signup">Register</button>
+        <button type="submit" id="submit-btn" class="btn-signup">Register</button>
 
-        <a href="login.jsp" class="login-link">Already have an account? Log in</a>
+        <a href="${pageContext.request.contextPath}/resources/pages/user/login.jsp" class="login-link">Already have an account? Log in</a>
     </form>
 </div>
 
 <script>
-    const form = document.getElementById('signupForm');
-    const passwordInput = document.getElementById('user_password');
-    const confirmInput = document.getElementById('confirm_password');
-    const passwordHint = document.getElementById('passwordHint');
-    const matchHint = document.getElementById('matchHint');
-    const errorBox = document.getElementById('validation-error');
+    const password = document.getElementById("user_password");
+    const confirm = document.getElementById("confirm_password");
+    const errorMsg = document.getElementById("match-error");
+    const submitBtn = document.getElementById("submit-btn");
 
-    // 1. Validate Password Length
-    passwordInput.addEventListener('input', () => {
-        const val = passwordInput.value;
-        if (val.length > 0 && val.length < 8) {
-            passwordHint.classList.add('invalid');
-            passwordHint.textContent = "Too short (" + val.length + "/8 characters)";
-        } else {
-            passwordHint.classList.remove('invalid');
-            passwordHint.textContent = "Must be at least 8 characters";
-        }
-        checkMatch(); // Re-check match when password changes
-    });
-
-    // 2. Validate Password Match in real-time
-    const checkMatch = () => {
-        if (confirmInput.value.length > 0) {
-            if (passwordInput.value !== confirmInput.value) {
-                matchHint.textContent = "Passwords do not match";
-                matchHint.style.color = "#dc3545";
+    function validate() {
+        if (confirm.value.length > 0) {
+            if (password.value === confirm.value) {
+                confirm.classList.remove("invalid-input");
+                confirm.classList.add("valid-input");
+                errorMsg.textContent = "✓ Passwords match";
+                errorMsg.className = "validation-message success-text";
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = "1";
             } else {
-                matchHint.textContent = "Passwords match";
-                matchHint.style.color = "#28a745";
-                errorBox.style.display = 'none';
+                confirm.classList.remove("valid-input");
+                confirm.classList.add("invalid-input");
+                errorMsg.textContent = "Passwords do not match";
+                errorMsg.className = "validation-message error-text";
+                submitBtn.disabled = true;
+                submitBtn.style.opacity = "0.6";
             }
         } else {
-            matchHint.textContent = "";
+            confirm.classList.remove("invalid-input", "valid-input");
+            errorMsg.textContent = "";
         }
-    };
+    }
 
-    confirmInput.addEventListener('input', checkMatch);
-
-    // 3. Final Validation on Submit
-    form.addEventListener('submit', (e) => {
-        let message = "";
-
-        if (passwordInput.value.length < 8) {
-            message = "Error: Password must be at least 8 characters long.";
-        } else if (passwordInput.value !== confirmInput.value) {
-            message = "Error: Passwords do not match.";
-        }
-
-        if (message !== "") {
-            e.preventDefault();
-            errorBox.textContent = message;
-            errorBox.style.display = 'block';
-            window.scrollTo(0, 0); // Scroll to top to see error
-        }
-    });
+    password.addEventListener("input", validate);
+    confirm.addEventListener("input", validate);
 </script>
 
 </body>

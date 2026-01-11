@@ -52,7 +52,6 @@ body {
     line-height: 1.4;
 }
 
-/* Sent by the current logged-in user */
 .sent {
     align-self: flex-end;
     background-color: var(--user-color);
@@ -60,7 +59,6 @@ body {
     border-bottom-right-radius: 2px;
 }
 
-/* Sent by the other person */
 .received {
     align-self: flex-start;
     background-color: #e4e6eb;

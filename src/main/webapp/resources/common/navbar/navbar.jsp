@@ -1,11 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Integer navUserId = (Integer) session.getAttribute("user_id");
-    // Retrieve the admin status from the session
     Boolean isAdmin = (Boolean) session.getAttribute("user_is_admin");
 
     boolean isLoggedIn = (navUserId != null);
-    // Ensure isAdmin is not null before checking value
     boolean showAdminLink = (isAdmin != null && isAdmin);
 %>
 

@@ -1,10 +1,13 @@
-.footer_container {
+footer.footer_container {
     background-color: #212121;
     color: #F5F5F5;
     width: 100%;
     padding: 30px 10px;
     text-align: center;
-    margin-top: auto; /* attention . use to push footer to botton.*/
+    margin-top: auto;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 

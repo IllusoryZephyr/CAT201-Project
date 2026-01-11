@@ -1,6 +1,6 @@
-html, body {
-    height: 100%;
-    margin: 0;
+html {
+    height: auto;
+    min-height: 100%;
 }
 
 body {
@@ -8,13 +8,18 @@ body {
     flex-direction: column;
     min-height: 100vh; /* Changed from height to min-height */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    position: relative;
 }
 
 .dashboard-container {
+    flex: 1 0 auto;
     max-width: 1000px;
     margin: 50px auto;
     padding: 20px;
-    min-height: 70vh; /* Ensures footer stays down */
+    width: 100%;
+    display: block;
+    overflow: visible;
 }
 
 .dashboard-header {
@@ -27,14 +32,12 @@ body {
     font-size: 2.5rem;
 }
 
-/* Grid for Cards */
 .action-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
 }
 
-/* Action Cards */
 .action-card {
     background: #ffffff;
     border-radius: 8px;
@@ -59,7 +62,6 @@ body {
     margin-bottom: 25px;
 }
 
-/* Buttons */
 .btn {
     padding: 12px 24px;
     border: none;

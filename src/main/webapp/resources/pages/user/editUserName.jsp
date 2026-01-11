@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Edit User Name</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/pages/user/editUser.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/pages/user/editUserName.css">
 </head>
 <body>
 

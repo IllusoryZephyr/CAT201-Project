@@ -47,7 +47,7 @@
 </div>
 
 <script>
-    // Auto-scroll to bottom of chat
+    // Scroll to bottom of chat when going to this page
     const messageArea = document.getElementById('messageArea');
     messageArea.scrollTop = messageArea.scrollHeight;
 </script>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Security</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/pages/user/editUser.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/pages/user/editUserPassword.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -42,7 +42,6 @@
     const submitBtn = document.getElementById("submit-btn");
 
     function validate() {
-        // Only show validation if the user has started typing in the confirm field
         if (confirm.value.length > 0) {
             if (password.value === confirm.value) {
                 confirm.classList.remove("invalid-input");
@@ -60,7 +59,6 @@
                 submitBtn.style.opacity = "0.6";
             }
         } else {
-            // Reset if confirm field is empty
             confirm.classList.remove("invalid-input", "valid-input");
             errorMsg.textContent = "";
         }

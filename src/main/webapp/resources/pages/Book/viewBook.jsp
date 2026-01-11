@@ -11,6 +11,12 @@
 <body>
 
 <div class="container">
+    <div class="back-nav">
+        <a href="${pageContext.request.contextPath}/resources/pages/user/adminDashboard.jsp" class="btn-back">
+            <span class="arrow">&larr;</span> Back to Dashboard
+        </a>
+    </div>
+
     <%
         // 1. Logic for Single Book View
         String idParam = request.getParameter("id");

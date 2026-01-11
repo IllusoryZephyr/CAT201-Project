@@ -11,6 +11,12 @@
     <jsp:include page="../../common/navbar/navbar.jsp" />
 
     <div class="container">
+        <div class="back-nav">
+            <a href="${pageContext.request.contextPath}/resources/pages/user/adminDashboard.jsp" class="btn-back">
+                <span class="arrow">&larr;</span> Back to Dashboard
+            </a>
+        </div>
+
         <h2>Customer Support Inbox</h2>
 
         <div class="chat-list">

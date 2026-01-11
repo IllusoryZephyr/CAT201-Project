@@ -10,9 +10,9 @@
 <jsp:include page="../../common/navbar/navbar.jsp" />
 
 <div class="admin-container">
-    <div class="back-btn-container">
-        <a href="${pageContext.request.contextPath}/resources/pages/user/adminDashboard.jsp" class="btn-secondary">
-            &larr; Back to Dashboard
+    <div class="back-nav">
+        <a href="${pageContext.request.contextPath}/resources/pages/user/adminDashboard.jsp" class="btn-back">
+            <span class="arrow">&larr;</span> Back to Dashboard
         </a>
     </div>
 

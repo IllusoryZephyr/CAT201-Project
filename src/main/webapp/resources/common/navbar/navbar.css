@@ -1,50 +1,99 @@
+:root {
+    --nav-bg: rgba(255, 255, 255, 0.95);
+    --primary-color: #6366f1; /* Indigo */
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --accent-bg: #f8fafc;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 40px;
-    background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 0.75rem 5%;
+    background: var(--nav-bg);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
     position: sticky;
     top: 0;
     z-index: 1000;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 .nav-brand {
     display: flex;
     align-items: center;
+    gap: 12px;
     text-decoration: none;
-    gap: 10px;
+    color: var(--text-main);
 }
 
 .logo-icon {
-    font-size: 1.8rem;
-    color: #fdd835;
+    background: var(--primary-color);
+    color: white;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    transition: var(--transition);
 }
 
 .brand-text {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 700;
-    color: #2c3e50;
+    letter-spacing: -0.5px;
 }
 
+.nav-brand:hover .logo-icon {
+    transform: rotate(-10deg) scale(1.1);
+}
 
 .nav-links {
     display: flex;
-    gap: 25px;
+    gap: 2rem;
+    align-items: center;
 }
 
 .nav-links a {
     text-decoration: none;
-    color: #2c3e50;
+    color: var(--text-muted);
     font-weight: 500;
-    font-size: 1rem;
-    transition: color 0.2s;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    position: relative;
 }
 
 .nav-links a:hover {
-    color: #007bff;
+    color: var(--primary-color);
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.support-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent-bg);
+    padding: 6px 12px;
+    border-radius: 20px;
 }
 
 .nav-actions {
@@ -54,51 +103,36 @@
 
 .icon-group {
     display: flex;
+    gap: 1rem;
     align-items: center;
-    gap: 15px;
 }
 
 .icon-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     text-decoration: none;
-    transition: transform 0.2s;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--transition);
+    background: transparent;
 }
 
 .icon-btn:hover {
-    transform: scale(1.05);
+    background: var(--accent-bg);
+    color: var(--primary-color);
+    transform: translateY(-2px);
 }
 
-
-.cart-btn {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    border: 2px solid #2c3e50;
-    color: #2c3e50;
-    font-size: 1.2rem;
+.admin-btn {
+    color: #ef4444;
+    background: #fef2f2;
 }
 
-
-.profile-btn {
-    width: 45px;
-    height: 45px;
-    border-radius: 8px;
-    background-color: #e0e0e0;
-    color: #2c3e50;
-    font-size: 1.2rem;
-}
-
-
-@media screen and (max-width: 900px) {
-    .navbar {
-        flex-direction: column;
-        gap: 15px;
-        padding: 15px;
-    }
-
-    .nav-links {
-        display: none;
-    }
+.admin-btn:hover {
+    background: #fee2e2;
+    color: #dc2626;
 }

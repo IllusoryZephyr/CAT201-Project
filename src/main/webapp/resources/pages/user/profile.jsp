@@ -30,9 +30,9 @@
     <hr>
 
     <div class="actions">
-        <a href="editUserName.jsp" class="btn btn-edit">Edit User Name</a>
+        <a href="${pageContext.request.contextPath}/resources/pages/user/editUserName.jsp" class="btn btn-edit">Edit User Name</a>
 
-        <a href="editUserPassword.jsp" class="btn btn-edit">Edit User Password</a>
+        <a href="${pageContext.request.contextPath}/resources/pages/user/editUserPassword.jsp" class="btn btn-edit">Edit User Password</a>
 
         <form action="${pageContext.request.contextPath}/UserServlet" method="post">
             <input type="hidden" name="action" value="logout">
