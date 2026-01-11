@@ -33,21 +33,11 @@ public class CheckoutServlet extends HttpServlet {
             return;
         }
 
-
-        // ------------------temporary user id before user module------------------------(should be replaced)
-
-        // if (userId == null) {
-        //     userId = 1;
-        //     System.out.println("WARNING: Using Dummy User ID 1 for testing.");
-        // }
-
-        //  Validation: Is Cart empty?
         if (cart == null || cart.getItems().isEmpty()) {
             response.sendRedirect("resources/pages/cart/Cart.jsp?error=EmptyCart");
             return;
         }
 
-        //  Get form data from checkout page
         String address = request.getParameter("address");
         String paymentMethod = request.getParameter("paymentMethod");
 
