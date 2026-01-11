@@ -147,19 +147,13 @@ public class BookDAO {
             con = DatabaseConnection.getConnection();
             con.setAutoCommit(false); // 1. Start Transaction
 
-            // ---------------------------------------------------------
-            // STEP A: Delete Reviews (Check table name!)
-            // If your book table is HR.BOOK_TB, your review table is likely HR.REVIEWS or HR.REVIEW_TB
-            // ---------------------------------------------------------
-            String deleteReviewsSql = "DELETE FROM REVIEWS WHERE BOOK_ID = ?";
+
+            String deleteReviewsSql = "DELETE FROM REVIEW_TB WHERE BOOK_ID = ?";
             psReview = con.prepareStatement(deleteReviewsSql);
             psReview.setInt(1, id);
             psReview.executeUpdate();
 
-            // ---------------------------------------------------------
-            // STEP B: Delete Book (MUST MATCH YOUR getAllBooks NAME)
-            // Fixed: Added "HR." prefix
-            // ---------------------------------------------------------
+
             String deleteBookSql = "DELETE FROM BOOK_TB WHERE BOOK_ID = ?";
             psBook = con.prepareStatement(deleteBookSql);
             psBook.setInt(1, id);
