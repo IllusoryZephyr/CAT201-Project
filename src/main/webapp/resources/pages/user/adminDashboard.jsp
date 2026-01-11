@@ -27,7 +27,7 @@
         <div class="action-card">
             <h3>Support Chats</h3>
             <p>Monitor and respond to customer service messages and inquiries.</p>
-            <form action="${pageContext.request.contextPath}/UserServlet" method="GET">
+            <form action="${pageContext.request.contextPath}/CustomerServiceServlet" method="GET">
                 <input type="hidden" name="action" value="viewChats">
                 <button type="submit" class="btn btn-primary">View Chats</button>
             </form>
