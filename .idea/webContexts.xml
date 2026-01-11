@@ -9,6 +9,7 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/resources/pages/home/Main.jsp" value="file://$PROJECT_DIR$/src/main/webapp/resources/pages/home" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/resources/pages/home/home.jsp" value="file://$PROJECT_DIR$/src/main/webapp/resources/pages/home" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/resources/pages/user/adminEditUser.jsp" value="file://$PROJECT_DIR$/src/main/webapp/resources/pages/user" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/resources/pages/user/customerService.jsp" value="file://$PROJECT_DIR$/src/main/webapp/resources/pages/user" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/resources/pages/user/editUser.jsp" value="file://$PROJECT_DIR$/src/main/webapp/resources/pages/user" />
       </map>
     </option>

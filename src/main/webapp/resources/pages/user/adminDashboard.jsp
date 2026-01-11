@@ -28,7 +28,7 @@
             <h3>Support Chats</h3>
             <p>Monitor and respond to customer service messages and inquiries.</p>
             <form action="${pageContext.request.contextPath}/CustomerServiceServlet" method="GET">
-                <input type="hidden" name="action" value="viewChats">
+                <input type="hidden" name="action" value="viewAllChats">
                 <button type="submit" class="btn btn-primary">View Chats</button>
             </form>
         </div>

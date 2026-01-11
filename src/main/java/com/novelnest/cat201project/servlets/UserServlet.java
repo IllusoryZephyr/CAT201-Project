@@ -15,6 +15,7 @@ import java.util.List;
 
 @WebServlet("/UserServlet")
 public class UserServlet extends HttpServlet {
+    private final UserDAO userDAO = new UserDAO();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -25,8 +26,6 @@ public class UserServlet extends HttpServlet {
 
             user.setName(request.getParameter("user_name"));
             user.setPassword(request.getParameter("user_password"));
-
-            UserDAO userDAO = new UserDAO();
 
             if (userDAO.addUser(user)) {
                 HttpSession session = request.getSession();
@@ -66,8 +65,6 @@ public class UserServlet extends HttpServlet {
                     user.setPassword((String) session.getAttribute("user_password"));
                 }
 
-                UserDAO userDAO = new UserDAO();
-
                 if (userDAO.editUser(user)) {
                     setSessionUser(session, user);
                     response.sendRedirect(request.getContextPath() + "/resources/pages/user/profile.jsp");
@@ -91,8 +88,6 @@ public class UserServlet extends HttpServlet {
 
                 user.setId((int) session.getAttribute("user_id"));
 
-                UserDAO userDAO = new UserDAO();
-
                 if (userDAO.deleteUser(user)) {
                     session.invalidate();
 
@@ -114,8 +109,6 @@ public class UserServlet extends HttpServlet {
 
             user.setName(request.getParameter("user_name"));
             user.setPassword(request.getParameter("user_password"));
-
-            UserDAO userDAO = new UserDAO();
 
             if (userDAO.checkUserPassword(user)) {
                 HttpSession session = request.getSession();
@@ -147,7 +140,6 @@ public class UserServlet extends HttpServlet {
             user.setPassword(request.getParameter("user_password"));
             user.setAdmin(Boolean.parseBoolean(request.getParameter("is_admin")));
 
-            UserDAO userDAO = new UserDAO();
             if (userDAO.editUser(user)) {
                 response.sendRedirect(request.getContextPath() + "/UserServlet?action=manageUsers");
             } else {
@@ -162,7 +154,6 @@ public class UserServlet extends HttpServlet {
         String action = request.getParameter("action");
 
         if (action.equals("manageUsers")) {
-            UserDAO userDAO = new UserDAO();
             List<UserInfo> allUsers = userDAO.getAllUser();
 
             request.setAttribute("userList", allUsers);
@@ -171,7 +162,6 @@ public class UserServlet extends HttpServlet {
 
         else if (action.equals("adminEditUserForm")){
             int userId = Integer.parseInt(request.getParameter("user_id"));
-            UserDAO userDAO = new UserDAO();
 
             UserInfo user = userDAO.getUserById(userId);
 

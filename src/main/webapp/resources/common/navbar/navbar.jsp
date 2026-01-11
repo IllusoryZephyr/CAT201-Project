@@ -26,6 +26,12 @@
         <a href="#">Explore Now</a>
         <a href="#">About</a>
         <a href="#">Contact</a>
+
+        <% if (isLoggedIn && !showAdminLink) { %>
+        <a href="${pageContext.request.contextPath}/CustomerServiceServlet?action=viewChat&ownerId=${sessionScope.user_id}" class="support-link">
+            <i class="fas fa-headset"></i> Support
+        </a>
+        <% } %>
     </div>
 
     <div class="nav-actions">

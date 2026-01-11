@@ -139,8 +139,6 @@ public class UserDAO {
                     user.setPassword(rs.getString("USER_PASSWORD"));
                     user.setCreated(rs.getTimestamp("USER_CREATION_DATE").toLocalDateTime());
                     user.setAdmin(rs.getBoolean("USER_IS_ADMIN"));
-
-                    return user;
                 }
             }
         }

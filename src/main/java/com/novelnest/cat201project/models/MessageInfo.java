@@ -12,6 +12,19 @@ public class MessageInfo {
 
     public MessageInfo() {}
 
+    public MessageInfo(int ownerID, int senderID, String message) {
+        this.ownerID = ownerID;
+        this.senderID = senderID;
+        this.message = message;
+
+        if (this.senderID == this.ownerID) {
+            this.ownerSeen = true;
+        }
+        else  {
+            this.adminSeen = true;
+        }
+    }
+
     public void setOwnerID(int ownerID) {this.ownerID = ownerID;}
     public void setSenderID(int senderID) {this.senderID = senderID;}
     public void setTimestamp(LocalDateTime timestamp) {this.timestamp = timestamp;}

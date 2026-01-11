@@ -84,3 +84,29 @@ body {
     background-color: #e0e7ff;
     color: #3730a3;
 }
+
+/* Back Button Styling */
+.back-btn-container {
+    margin-bottom: 20px;
+}
+
+.btn-secondary {
+    text-decoration: none;
+    background-color: #3498db;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-secondary i {
+    margin-right: 8px;
+}

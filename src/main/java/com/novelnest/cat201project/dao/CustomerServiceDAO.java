@@ -21,8 +21,8 @@ public class CustomerServiceDAO {
             pstmt.setString(1, String.valueOf(message.getOwnerID()));
             pstmt.setString(2, String.valueOf(message.getSenderID()));
             pstmt.setString(3, message.getMessage());
-            pstmt.setString(4, String.valueOf(message.getOwnerSeen()));
-            pstmt.setString(5, String.valueOf(message.getAdminSeen()));
+            pstmt.setBoolean(4, message.getOwnerSeen());
+            pstmt.setBoolean(5, message.getAdminSeen());
 
             int affectedRows = pstmt.executeUpdate();
 
@@ -44,10 +44,11 @@ public class CustomerServiceDAO {
 
             try (ResultSet rs = pstmt.executeQuery()) {
 
-                storeMessageList(messageList, rs);
+                while (rs.next()) {
+                    storeMessageInList(messageList, rs);
+                }
+                
                 messageList.sort(Comparator.comparing(MessageInfo::getTimestamp));
-
-                return messageList;
             }
         }
         catch (SQLException _) {}
@@ -57,47 +58,46 @@ public class CustomerServiceDAO {
 
     public List<List<MessageInfo>> getAllMessages() {
         List<List<MessageInfo>> chatList = new ArrayList<>();
-        String sqlCommand = "SELECT USER_ID FROM USER_TB WHERE USER_IS_ADMIN = 0";
+        String sqlCommand = "SELECT m.OWNER_ID, m.SENDER_ID, m.TIMESTAMP, m.MESSAGE, m.OWNER_SEEN, m.ADMIN_SEEN " + 
+                                "FROM USER_TB u " +
+                                "JOIN MESSAGE_TB m ON u.USER_ID = m.OWNER_ID " +
+                                "WHERE u.USER_IS_ADMIN = 0 " +
+                                "ORDER BY m.OWNER_ID, m.TIMESTAMP ASC";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement pstmt = con.prepareStatement(sqlCommand);
-             ResultSet rs = pstmt.executeQuery()){
+             ResultSet rs = pstmt.executeQuery()) {
+
+            int lastUserId = -1;
+            List<MessageInfo> currentMessageList = null;
 
             while (rs.next()) {
-                List<MessageInfo> messageList = new ArrayList<>();
-                String sqlCommand2 = "SELECT * FROM MESSAGE_TB WHERE OWNER_ID = ?";
+                int currentUserId = rs.getInt("OWNER_ID");
 
-                try (PreparedStatement pstmt2 = con.prepareStatement(sqlCommand2)) {
-
-                    pstmt2.setString(1, String.valueOf(rs.getInt("USER_ID")));
-
-                    try (ResultSet rs2 = pstmt2.executeQuery()){
-
-                        storeMessageList(messageList, rs2);
-                        messageList.sort(Comparator.comparing(MessageInfo::getTimestamp));
-
-                        chatList.add(messageList);
-                    }
+                if (currentUserId != lastUserId) {
+                    currentMessageList = new ArrayList<>();
+                    chatList.add(currentMessageList);
+                    lastUserId = currentUserId;
                 }
+
+                if (currentMessageList != null) storeMessageInList(currentMessageList, rs);
             }
         }
         catch (SQLException _) {}
 
         return chatList;
     }
+    
+    private void storeMessageInList(List<MessageInfo> messageList, ResultSet rs) throws SQLException {
+        MessageInfo message = new MessageInfo();
 
-    private void storeMessageList(List<MessageInfo> messageList, ResultSet rs) throws SQLException {
-        while (rs.next()) {
-            MessageInfo message = new MessageInfo();
+        message.setOwnerID(rs.getInt("OWNER_ID"));
+        message.setSenderID(rs.getInt("SENDER_ID"));
+        message.setTimestamp(rs.getTimestamp("TIMESTAMP").toLocalDateTime());
+        message.setMessage(rs.getString("MESSAGE"));
+        message.setOwnerSeen(rs.getBoolean("OWNER_SEEN"));
+        message.setAdminSeen(rs.getBoolean("ADMIN_SEEN"));
 
-            message.setOwnerID(rs.getInt("OWNER_ID"));
-            message.setSenderID(rs.getInt("SENDER_ID"));
-            message.setTimestamp(rs.getTimestamp("TIMESTAMP").toLocalDateTime());
-            message.setMessage(rs.getString("MESSAGE"));
-            message.setOwnerSeen(rs.getBoolean("OWNER_SEEN"));
-            message.setAdminSeen(rs.getBoolean("ADMIN_SEEN"));
-
-            messageList.add(message);
-        }
+        messageList.add(message);
     }
 }
