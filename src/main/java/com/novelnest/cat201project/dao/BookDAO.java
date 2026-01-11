@@ -15,7 +15,7 @@ public class BookDAO {
         int generatedId = -1;
 
         String sql = "INSERT INTO BOOK_TB (BOOK_ID, BOOK_TITLE, BOOK_AUTHOR, BOOK_CATEGORY, BOOK_DESCRIPTION, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH) " +
-                "VALUES (HR.BOOK_ID_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
+                "VALUES (BOOK_ID_SEQ.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)";
         try {
             con = DatabaseConnection.getConnection();
             con.setAutoCommit(false);
