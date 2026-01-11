@@ -147,12 +147,10 @@ public class BookDAO {
             con = DatabaseConnection.getConnection();
             con.setAutoCommit(false); // Start Transaction
 
-
             String deleteReviewsSql = "DELETE FROM REVIEW_TB WHERE BOOK_ID = ?";
             psReview = con.prepareStatement(deleteReviewsSql);
             psReview.setInt(1, id);
             psReview.executeUpdate();
-
 
             String deleteBookSql = "DELETE FROM BOOK_TB WHERE BOOK_ID = ?";
             psBook = con.prepareStatement(deleteBookSql);
@@ -170,16 +168,17 @@ public class BookDAO {
             }
 
         } catch (SQLException e) {
-            // 3. Rollback on Error
-            try { if (con != null) con.rollback(); } catch (SQLException ex) {}
+            // Rollback on Error
+            try {
+                if (con != null)
+                    con.rollback();
+            } catch (SQLException ex) {
+            }
 
             System.out.println("DEBUG ERROR: " + e.getMessage());
             e.printStackTrace(); // Check this if it still fails!
         } finally {
             // Close Resources
-            // Since you have a helper method 'closeResources', you can use it here too:
-            // closeResources(null, psBook, null);
-            // But manual closing is fine too:
             try {
                 if (psReview != null)
                     psReview.close();
@@ -209,15 +208,26 @@ public class BookDAO {
                 rs.getString("BOOK_DESCRIPTION"), // Correct mapping
                 rs.getDouble("BOOK_PRICE"),
                 rs.getInt("BOOK_QUANTITY"),
-                rs.getString("BOOK_IMAGE_PATH")
-        );
+                rs.getString("BOOK_IMAGE_PATH"));
     }
 
     // Helper to close resources
     private void closeResources(ResultSet rs, Statement stmt, Connection con) {
-        try { if (rs != null) rs.close(); } catch (Exception e) {}
-        try { if (stmt != null) stmt.close(); } catch (Exception e) {}
-        try { if (con != null) con.close(); } catch (Exception e) {}
+        try {
+            if (rs != null)
+                rs.close();
+        } catch (Exception e) {
+        }
+        try {
+            if (stmt != null)
+                stmt.close();
+        } catch (Exception e) {
+        }
+        try {
+            if (con != null)
+                con.close();
+        } catch (Exception e) {
+        }
     }
 
     // Show books in catalogue
@@ -251,7 +261,7 @@ public class BookDAO {
     // Search books by title or author for catalogue display
     public List<BookInfo> searchBooksForCatalogue(String searchInput) {
         List<BookInfo> books = new ArrayList<>();
-        String query = "SELECT BOOK_ID, BOOK_TITLE, BOOK_AUTHOR, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM BOOK_TB WHERE BOOK_TITLE LIKE ? OR BOOK_AUTHOR LIKE ?";
+        String query = "SELECT BOOK_ID, BOOK_TITLE, BOOK_AUTHOR, BOOK_CATEGORY, BOOK_PRICE, BOOK_QUANTITY, BOOK_IMAGE_PATH FROM BOOK_TB WHERE UPPER(BOOK_TITLE) LIKE UPPER(?) OR UPPER(BOOK_AUTHOR) LIKE UPPER(?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {

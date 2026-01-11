@@ -5,14 +5,18 @@
 <%@ page import="java.util.List" %>
 
 <html>
+
 <head>
     <title>Shopping Cart - NovelNest</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="cart.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/common/footer/footer.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/common/navbar/navbar.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/resources/common/footer/footer.css">
+    <link rel="stylesheet"
+          href="${pageContext.request.contextPath}/resources/common/navbar/navbar.css">
     <script src="checkoutValidation.js"></script>
 </head>
+
 <body>
 <jsp:include page="/resources/common/navbar/navbar.jsp" />
 <div class="container">
@@ -27,11 +31,10 @@
     %>
     <div class="empty-cart">
         <p>Your cart is currently empty.</p>
-        <a href="home.jsp" class="btn btn-primary">Browse Books</a> <%-- home.jsp could be other page like book page or product page--%>
+        <a href="${pageContext.request.contextPath}/resources/pages/Catalogue/catalogue.jsp"
+           class="btn btn-primary">Browse Books</a>
     </div>
-    <%
-    } else {
-    %>
+    <% } else { %>
     <table class="cart-table">
         <thead>
         <tr>
@@ -51,55 +54,65 @@
         <tr>
             <td>
                 <div class="cart-book-info">
-                    <img src="<%= book.getImagePath() %>" alt="Cover" class="book-thumb">
+                    <img src="<%= book.getImagePath() %>" alt="Cover"
+                         class="book-thumb">
                     <div>
-                        <strong><%= book.getTitle() %></strong>
+                        <strong>
+                            <%= book.getTitle() %>
+                        </strong>
                         <br>
                         <small>ID: <%= book.getId() %></small>
                     </div>
                 </div>
             </td>
-            <td>RM <%= String.format("%.2f", book.getPrice()) %></td>
+            <td>RM <%= String.format("%.2f", book.getPrice()) %>
+            </td>
 
             <td>
-                <form action="${pageContext.request.contextPath}/CartServlet" method="post" class="qty-form">
+                <form action="${pageContext.request.contextPath}/CartServlet"
+                      method="post" class="qty-form">
                     <input type="hidden" name="action" value="update">
-                    <input type="hidden" name="bookId" value="<%= book.getId() %>">
-                    <input type="number" name="quantity" value="<%= item.getQuantity() %>" min="1" style="width: 50px;">
+                    <input type="hidden" name="bookId"
+                           value="<%= book.getId() %>">
+                    <input type="number" name="quantity"
+                           value="<%= item.getQuantity() %>" min="1"
+                           style="width: 50px;">
                     <button type="submit" class="btn-small">Update</button>
                 </form>
             </td>
 
-            <td>RM <%= String.format("%.2f", item.getTotalPrice()) %></td>
+            <td>RM <%= String.format("%.2f", item.getTotalPrice()) %>
+            </td>
 
             <td>
-                <form action="${pageContext.request.contextPath}/CartServlet" method="post" onsubmit="return confirmRemove()">
+                <form action="${pageContext.request.contextPath}/CartServlet"
+                      method="post" onsubmit="return confirmRemove()">
                     <input type="hidden" name="action" value="remove">
-                    <input type="hidden" name="bookId" value="<%= book.getId() %>">
+                    <input type="hidden" name="bookId"
+                           value="<%= book.getId() %>">
                     <button type="submit" class="btn-remove">Remove</button>
                 </form>
             </td>
         </tr>
-        <%
-            }
-        %>
+        <% } %>
         </tbody>
     </table>
 
     <div class="cart-summary">
-        <h3>Grand Total: RM <%= String.format("%.2f", cart.grandTotal()) %></h3>
+        <h3>Grand Total: RM <%= String.format("%.2f", cart.grandTotal()) %>
+        </h3>
 
         <div class="cart-actions">
-            <a href="home.jsp" class="btn btn-secondary">Continue Shopping</a>
+            <a href="${pageContext.request.contextPath}/resources/pages/Catalogue/catalogue.jsp"
+               class="btn btn-secondary">Continue Shopping</a>
             <a href="checkout.jsp" class="btn btn-success">Proceed to Checkout</a>
         </div>
     </div>
-    <%
-        }
-    %>
+    <% } %>
 </div>
 
 <jsp:include page="/resources/common/footer/footer.jsp" />
 
 </body>
+
 </html>

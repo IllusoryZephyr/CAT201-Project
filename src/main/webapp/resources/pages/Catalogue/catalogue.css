@@ -297,7 +297,7 @@ body {
 }
 
 .price-value {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: #27ae60;
 }
@@ -305,21 +305,25 @@ body {
 /* Add to Cart Button */
 .add-to-cart-form {
     margin: 0;
+    width: 100%;
 }
 
 .btn-add-cart {
-    padding: 10px 20px;
+    padding: 10px 16px;
     background-color: #27ae60;
     color: white;
     border: none;
     border-radius: 8px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    min-width: 120px;
 }
 
 .btn-add-cart:hover {
@@ -331,6 +335,7 @@ body {
 .btn-disabled {
     background-color: #bdc3c7;
     cursor: not-allowed;
+    width: 100%;
 }
 
 .btn-disabled:hover {
