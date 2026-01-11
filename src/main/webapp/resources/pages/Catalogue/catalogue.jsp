@@ -7,11 +7,13 @@
 
 <head>
     <title>NovelNest - Book Catalogue</title>
-    <link rel="stylesheet" type="text/css" href="catalogue.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/pages/Catalogue/catalogue.css">
 
 </head>
 
 <body>
+
+<jsp:include page="../../common/navbar/navbar.jsp" />
 
 <div class="catalogue-container">
     <!-- Header Section -->
@@ -162,6 +164,8 @@
         <% } %>
     </div>
 </div>
+
+<jsp:include page="../../common/footer/footer.jsp" />
 
 </body>
 

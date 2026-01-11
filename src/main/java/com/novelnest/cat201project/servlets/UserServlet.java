@@ -120,7 +120,7 @@ public class UserServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 setSessionUser(session, user);
 
-                response.sendRedirect(request.getContextPath() + "/resources/pages/user/profile.jsp");
+                response.sendRedirect(request.getContextPath() + "/resources/pages/home/Main.jsp");
             }
             else {
                 request.setAttribute("error", "Invalid username or password.");

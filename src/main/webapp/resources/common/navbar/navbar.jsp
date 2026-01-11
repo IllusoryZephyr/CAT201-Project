@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <nav class="navbar">
-    <a href="${pageContext.request.contextPath}/home.jsp" class="nav-brand">
+    <a href="${pageContext.request.contextPath}/resources/pages/home/Main.jsp" class="nav-brand">
         <div class="logo-icon">
             <i class="fas fa-book-open"></i>
         </div>
@@ -21,11 +21,8 @@
     </a>
 
     <div class="nav-links">
-        <a href="#">Home</a>
-        <a href="#">Featured Books</a>
-        <a href="#">Explore Now</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+        <a href="${pageContext.request.contextPath}/resources/pages/home/Main.jsp">Home</a>
+        <a href="${pageContext.request.contextPath}/resources/pages/Catalogue/catalogue.jsp">Explore Books</a>
 
         <% if (isLoggedIn && !showAdminLink) { %>
         <a href="${pageContext.request.contextPath}/CustomerServiceServlet?action=viewChat&ownerId=${sessionScope.user_id}" class="support-link">
