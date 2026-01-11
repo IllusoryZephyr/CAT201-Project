@@ -26,7 +26,6 @@ h2 {
     margin-bottom: 20px;
 }
 
-/* 1. The "Add New Book" Button */
 .btn-add {
     display: inline-block;
     background-color: #27ae60;
@@ -42,7 +41,6 @@ h2 {
     background-color: #219150;
 }
 
-/* 2. The Table Styling */
 .book-table {
     width: 100%;
     border-collapse: collapse;
@@ -65,20 +63,18 @@ h2 {
     vertical-align: top;
 }
 
-/* Handle long Synopsis text */
 .book-table td:nth-child(3) {
     max-width: 300px;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* Adds "..." if text is too long */
+    text-overflow: ellipsis;
 }
 
 .book-table td:nth-child(3):hover {
-    white-space: normal; /* Shows full text on hover */
+    white-space: normal;
     overflow: visible;
 }
 
-/* 3. Action Buttons (Edit & Delete) */
 .btn-edit, .btn-delete {
     display: inline-block;
     padding: 6px 12px;

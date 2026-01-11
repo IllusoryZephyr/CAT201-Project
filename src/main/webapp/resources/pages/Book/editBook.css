@@ -1,30 +1,27 @@
-/* Base Page Layout */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7f6; /* Lighter grey-blue background */
+    background-color: #f4f7f6;
     margin: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/* Page Wrapper - Ensuring the form stays in the middle */
 .page-wrapper {
-    flex: 1; /* Pushes footer to bottom */
+    flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center; /* Centers vertically */
+    align-items: center;
     padding: 40px 20px;
 }
 
-/* Form Container Enhancements */
 .container {
     background: #ffffff;
     padding: 40px;
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
     width: 100%;
-    max-width: 550px; /* Slightly wider for better readability */
+    max-width: 550px;
 }
 
 h2 {
@@ -37,7 +34,6 @@ h2 {
     padding-bottom: 15px;
 }
 
-/* Form Groups */
 .form-group {
     margin-bottom: 18px;
     display: flex;
@@ -73,7 +69,6 @@ textarea {
     resize: vertical;
 }
 
-/* Button Actions */
 .form-actions {
     display: flex;
     gap: 15px;

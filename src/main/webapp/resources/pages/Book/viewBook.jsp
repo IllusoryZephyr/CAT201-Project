@@ -20,7 +20,6 @@
     </div>
 
     <%
-        // 1. Logic for Single Book View
         String idParam = request.getParameter("id");
         BookInfo singleBook = null;
         BookDAO dao = new BookDAO();
@@ -30,7 +29,7 @@
                 int bookId = Integer.parseInt(idParam);
                 singleBook = dao.getBookById(bookId);
             } catch (Exception e) {
-                /* Ignore parse errors */
+
             }
         }
     %>

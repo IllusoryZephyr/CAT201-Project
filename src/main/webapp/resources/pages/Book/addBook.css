@@ -1,14 +1,12 @@
-/* Base Page Layout */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f4f7f6;
     margin: 0;
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Ensures body takes full screen height */
+    min-height: 100vh;
 }
 
-/* Page Wrapper - Centers the form between Header and Footer */
 .page-wrapper {
     flex: 1;
     display: flex;
@@ -23,7 +21,7 @@ body {
     border-radius: 12px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     width: 100%;
-    max-width: 500px; /* Matched to Edit page for consistency */
+    max-width: 500px;
 }
 
 h2 {
@@ -36,7 +34,6 @@ h2 {
     padding-bottom: 15px;
 }
 
-/* Form Elements */
 input[type="text"],
 input[type="number"],
 textarea {
@@ -52,7 +49,7 @@ textarea {
 
 textarea {
     height: 100px;
-    resize: vertical; /* Allow vertical growth if needed */
+    resize: vertical;
 }
 
 input:focus, textarea:focus {
@@ -61,7 +58,6 @@ input:focus, textarea:focus {
     box-shadow: 0 0 8px rgba(52, 152, 219, 0.2);
 }
 
-/* Buttons */
 button[type="submit"] {
     width: 100%;
     padding: 14px;
