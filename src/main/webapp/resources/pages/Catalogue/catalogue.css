@@ -277,8 +277,8 @@ body {
 /* Book Footer */
 .book-footer {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
     margin-top: auto;
     padding-top: 15px;
     border-top: 1px solid #ecf0f1;
@@ -286,9 +286,7 @@ body {
 
 .book-price {
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
-    margin-bottom: 5px;
 }
 
 .price-label {
@@ -305,34 +303,27 @@ body {
 }
 
 /* Add to Cart Button */
-.add-to-cart-form,
-.btn-review-form {
-    width: 100%;
+.add-to-cart-form {
     margin: 0;
+    width: 100%;
 }
 
-.btn-add-cart,
-.btn-review {
-    width: 100%;        /* Make buttons fill the card width */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    border-radius: 6px;
-    font-weight: 600;
-}
-
-/* Give the Review Button a distinct look (Blue/Teal) */
-.btn-review {
-    background-color: #17a2b8;
+.btn-add-cart {
+    padding: 10px 16px;
+    background-color: #27ae60;
     color: white;
     border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.btn-review:hover {
-    background-color: #138496;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    min-width: 120px;
 }
 
 .btn-add-cart:hover {
