@@ -15,8 +15,7 @@
 </head>
 <body>
 
-
-
+<jsp:include page="../../common/navbar/navbar.jsp" />
 
 <div class="review-section">
 
@@ -75,3 +74,5 @@
         </tbody>
     </table>
 </div>
+
+<jsp:include page="../../common/footer/footer.jsp" />

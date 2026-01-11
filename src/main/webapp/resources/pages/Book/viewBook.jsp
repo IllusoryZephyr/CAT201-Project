@@ -10,6 +10,8 @@
 </head>
 <body>
 
+<jsp:include page="../../common/navbar/navbar.jsp" />
+
 <div class="container">
     <div class="back-nav">
         <a href="${pageContext.request.contextPath}/resources/pages/user/adminDashboard.jsp" class="btn-back">
@@ -129,6 +131,8 @@
     const contextPath = "${pageContext.request.contextPath}";
 </script>
 <script src="${pageContext.request.contextPath}/resources/pages/Book/bookFunction.js"></script>
+
+<jsp:include page="../../common/footer/footer.jsp" />
 
 </body>
 </html>
