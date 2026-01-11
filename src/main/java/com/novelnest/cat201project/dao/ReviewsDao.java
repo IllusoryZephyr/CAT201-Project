@@ -14,7 +14,7 @@ public class ReviewsDao {
         String sql = "INSERT INTO REVIEW_TB (USER_ID, BOOK_ID, REVIEW_TITLE, REVIEW_RATING, REVIEW_DESCRIPTION, REVIEW_CREATION_DATE) VALUES (?, ?, ?, ?, ?, SYSTIMESTAMP)";
         try {
             con = DatabaseConnection.getConnection();
-            con.setAutoCommit(false); // Manual commit
+            con.setAutoCommit(false);
 
             ps = con.prepareStatement(sql);
 
@@ -22,10 +22,9 @@ public class ReviewsDao {
             ps.setInt(2, review.getBookId());
 
             String title = (review.getTitle() != null) ? review.getTitle() : "Review";
-            ps.setString(3, title);          // Index 3 is TITLE
-
-            ps.setInt(4, review.getRating());       // Index 4 is RATING
-            ps.setString(5, review.getDescription()); // Index 5 is DESCRIPTION
+            ps.setString(3, title);
+            ps.setInt(4, review.getRating());
+            ps.setString(5, review.getDescription());
 
             int rows = ps.executeUpdate();
             if (rows > 0) {
@@ -43,7 +42,7 @@ public class ReviewsDao {
         }
         return success;
     }
-
+    // read review according to bookID
     public List<Reviews> getReviewsByBookId(int bookId) {
         List<Reviews> reviews = new ArrayList<>();
         Connection con = null;
@@ -58,11 +57,10 @@ public class ReviewsDao {
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                // Adjust constructor based on your Review model
                 Reviews r = new Reviews();
                 r.setUserId(rs.getInt("USER_ID"));
                 r.setBookId(rs.getInt("BOOK_ID"));
-                r.setTitle(rs.getString("REVIEW_TITLE")); // Make sure your model has setTitle
+                r.setTitle(rs.getString("REVIEW_TITLE"));
                 r.setRating(rs.getInt("REVIEW_RATING"));
                 r.setDescription(rs.getString("REVIEW_DESCRIPTION"));
                 r.setCreateDate(rs.getTimestamp("REVIEW_CREATION_DATE"));
@@ -83,7 +81,6 @@ public class ReviewsDao {
         ResultSet rs = null;
         double average = 0.0;
 
-        // Oracle's AVG function handles the math. COALESCE/NVL can default to 0 if no reviews exist.
         String sql = "SELECT AVG(REVIEW_RATING) FROM REVIEW_TB WHERE BOOK_ID = ?";
         try {
             con = DatabaseConnection.getConnection();
@@ -92,7 +89,6 @@ public class ReviewsDao {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                // getDouble returns 0.0 if the value is SQL NULL, which handles new books automatically
                 average = rs.getDouble(1);
             }
         } catch (SQLException e) {

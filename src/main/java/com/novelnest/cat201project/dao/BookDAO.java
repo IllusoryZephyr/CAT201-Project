@@ -7,7 +7,7 @@ import java.util.List;
 
 public class BookDAO {
 
-    // CREATE
+    // add new book
     public int addBook(BookInfo book) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -32,6 +32,7 @@ public class BookDAO {
 
             int rowsAffected = ps.executeUpdate();
 
+            //auto generate key method for prima
             if (rowsAffected > 0) {
                 rs = ps.getGeneratedKeys();
                 if (rs.next()) {
@@ -45,12 +46,12 @@ public class BookDAO {
             e.printStackTrace();
             try { if (con != null) con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
         } finally {
-            closeResources(rs, ps, con); // Use helper for consistency
+            closeResources(rs, ps, con); // close database connection
         }
         return generatedId;
     }
 
-    // READ ALL
+    // Rad the information of books from database
     public List<BookInfo> getAllBooks() {
         List<BookInfo> books = new ArrayList<>();
         Connection con = null;
@@ -74,7 +75,7 @@ public class BookDAO {
         return books;
     }
 
-    // READ ONE
+    // READ one book from database through BOOK_ID
     public BookInfo getBookById(int id) {
         BookInfo book = null;
         Connection con = null;
@@ -89,18 +90,17 @@ public class BookDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                // Direct assignment using helper method
                 book = mapResultSetToBook(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            closeResources(rs, ps, con); // Use helper for consistency
+            closeResources(rs, ps, con);
         }
         return book;
     }
 
-    // UPDATE
+    // Update book information
     public boolean updateBook(BookInfo book) {
         Connection con = null;
         PreparedStatement ps = null;
@@ -148,9 +148,9 @@ public class BookDAO {
             con.setAutoCommit(false); // Start Transaction
 
             String deleteReviewsSql = "DELETE FROM REVIEW_TB WHERE BOOK_ID = ?";
-            psReview = con.prepareStatement(deleteReviewsSql);
+            psReview = con.prepareStatement(deleteReviewsSql);//prepare to compile
             psReview.setInt(1, id);
-            psReview.executeUpdate();
+            psReview.executeUpdate();//update the table
 
             String deleteBookSql = "DELETE FROM BOOK_TB WHERE BOOK_ID = ?";
             psBook = con.prepareStatement(deleteBookSql);
@@ -316,4 +316,3 @@ public class BookDAO {
         return books;
     }
 }
-// testing

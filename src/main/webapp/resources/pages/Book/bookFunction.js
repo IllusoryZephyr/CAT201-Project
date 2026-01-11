@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // --- BOOK MANAGEMENT LOGIC ---
+    // book management
     const deleteButtons = document.querySelectorAll('.btn-delete');
     deleteButtons.forEach(button => {
         button.addEventListener('click', function(event) {
@@ -35,10 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-// --- 1. SETUP VARIABLES ---
+// Review management
     const contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/", 1));
     const urlParams = new URLSearchParams(window.location.search);
 
+    //get bookId
     let bookId = urlParams.get('id');
 
     if (!bookId || isNaN(bookId)) {
@@ -51,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    //fetch Review data from database
     function fetchSqlRows() {
         fetch(`${contextPath}/submitReview?id=${bookId}&format=html`)
             .then(res => res.text())
@@ -58,16 +60,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(data, 'text/html');
 
+                //push user input data
                 const summarySource = doc.querySelector("#sql-summary-data");
                 const tableSourceRows = doc.querySelectorAll("#sql-table-data tr");
                 console.log("Number of rows found in response:", tableSourceRows.length);
+
+                //check if there is data or not
                 if (tableSourceRows.length > 0) {
                     console.log("First row content:", tableSourceRows[0].innerHTML);
                 }
-
+                //push new average and review table
                 const summaryContainer = document.querySelector("#ratingSummaryContainer");
                 const tableBody = document.querySelector("#reviewsTableBody");
 
+                //check if there is data or not
                 if (summarySource && summaryContainer) {
                     summaryContainer.innerHTML = summarySource.innerHTML;
                 }

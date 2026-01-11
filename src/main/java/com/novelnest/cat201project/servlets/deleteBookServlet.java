@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import com.novelnest.cat201project.dao.BookDAO;
 import com.novelnest.cat201project.models.BookInfo;
-//ORACLE
 @WebServlet("/DeleteBookServlet")
 public class deleteBookServlet extends HttpServlet {
 
@@ -21,14 +20,14 @@ public class deleteBookServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // 1. Get the ID from the URL parameter (?id=...)
+        // Get the ID
         String idStr = request.getParameter("id");
 
         if (idStr != null) {
             int id = Integer.parseInt(idStr);
             BookDAO dao = new BookDAO();
 
-            // 2. Execute deletion
+            // Execute deletion
             boolean success = dao.deleteBook(id);
 
             if (success) {
@@ -36,6 +35,6 @@ public class deleteBookServlet extends HttpServlet {
             }
         }
 
-        // 3. ALWAYS redirect back to the catalog
+        //redirect back to the viewBook.jsp
         response.sendRedirect(request.getContextPath() + "/resources/pages/Book/viewBook.jsp");    }
 }

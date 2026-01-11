@@ -24,12 +24,6 @@ public class ReviewServlet extends HttpServlet {
         String idStr = request.getParameter("id");
 
         HttpSession session = request.getSession();
-        if (session.getAttribute("currentUser") == null) {
-            //UserInfo testUser = new UserInfo();
-            //testUser.setId(43);
-            //testUser.setName("TesterAdmin");
-            //session.setAttribute("currentUser", testUser);
-        }
 
         if (idStr == null || idStr.isEmpty()) return;
 
@@ -43,13 +37,11 @@ public class ReviewServlet extends HttpServlet {
                 response.setContentType("text/html");
                 PrintWriter out = response.getWriter();
 
-                // Box 1: Summary
                 out.print("<div id='sql-summary-data'>");
                 out.print("<strong>" + averageRating + " / 5 Stars</strong>");
                 out.print("<p>Based on " + reviewList.size() + " reviews</p>");
                 out.print("</div>");
 
-                // Box 2: Table Data (Wrapped in a table to prevent text-mashing)
                 out.print("<div id='sql-table-data'><table>");
                 for (Reviews r : reviewList) {
                     out.print("<tr>");
@@ -64,7 +56,6 @@ public class ReviewServlet extends HttpServlet {
                 out.print("</table></div>");
                 return;
             }
-            // Standard forward for first load
             request.setAttribute("reviewList", reviewList);
             request.getRequestDispatcher("/resources/pages/Book/BookRateReview.jsp").forward(request, response);
         } catch (Exception e) { e.printStackTrace(); }
@@ -74,11 +65,10 @@ public class ReviewServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Fix for Oracle character encoding
         request.setCharacterEncoding("UTF-8");
 
         try {
-            HttpSession session = request.getSession(false); // false = don't create a new session if one doesn't exist
+            HttpSession session = request.getSession(false);
             Integer userIdObj = (session != null) ? (Integer) session.getAttribute("user_id") : null;
 
             int userId;
@@ -86,7 +76,7 @@ public class ReviewServlet extends HttpServlet {
             if (userIdObj != null) {
                 userId = userIdObj;
             } else {
-                // 1. Send them to login
+                // Send them to login
                 String loginPath = request.getContextPath() + "/resources/pages/user/login.jsp?error=please_login";
                 response.sendRedirect(loginPath);
                 return;
@@ -98,16 +88,16 @@ public class ReviewServlet extends HttpServlet {
 
             System.out.println("DEBUG: Received bookId=" + bookIdStr + ", rating=" + ratingStr);
 
-            // Parse Book ID and Rating
-            int bookId = 2; // Default fallback
+            // Default bookId
+            int bookId = 2;
             if (bookIdStr != null && !bookIdStr.trim().isEmpty() && !bookIdStr.equals("null")) {
                 bookId = Integer.parseInt(bookIdStr);
             }
-            int rating = 5; // Default fallback
+            int rating = 5;
             if (ratingStr != null && !ratingStr.trim().isEmpty()) {
                 rating = Integer.parseInt(ratingStr);
             }
-            // Populate the model
+            //insert review data
             Reviews newReview = new Reviews();
             newReview.setBookId(bookId);
             newReview.setUserId(userId);
@@ -115,10 +105,10 @@ public class ReviewServlet extends HttpServlet {
             newReview.setTitle(title);
             newReview.setDescription(description);
 
-            // Save to Oracle Database
+            // Save
             boolean success = reviewsDao.addReview(newReview);
 
-            // AJAX handling
+            //send information if there is an error
             String requestedWith = request.getHeader("X-Requested-With");
             if ("XMLHttpRequest".equals(requestedWith)) {
                 response.setStatus(HttpServletResponse.SC_OK);

@@ -47,7 +47,6 @@
 
             <div class="form-group">
                 <label for="author">Author:</label>
-                <%-- Check for null to avoid printing the word "null" in the box --%>
                 <input type="text" name="author" id="author"
                        value="<%= (book.getAuthor() != null) ? book.getAuthor() : "" %>" required/>
             </div>

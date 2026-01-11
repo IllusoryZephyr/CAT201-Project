@@ -34,7 +34,7 @@
         }
     %>
 
-    <%-- 2. DISPLAY SINGLE BOOK DETAILS --%>
+    <%--single book details --%>
     <% if (singleBook != null) { %>
 
     <div class="book-details" style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
@@ -70,14 +70,14 @@
                 <p class="book-category"><strong>Category:</strong> <%= singleBook.getCategory() %></p>
             </div>
 
-        </div> <%-- Hidden input for JavaScript --%>
+        </div>
         <input type="hidden" id="bookId" value="<%= singleBook.getId() %>">
     </div>
     <% } %>
 
     <h2>Full Book Collection</h2>
     <div style="margin-bottom: 20px;">
-        <a href="addBook.jsp" class="btn-add">+ Add New Book</a>
+        <a href="${pageContext.request.contextPath}/resources/pages/Book/addBook.jsp" class="btn-add">+ Add New Book</a>
     </div>
 
     <table border="1" class="book-table">

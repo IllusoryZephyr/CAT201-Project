@@ -18,7 +18,7 @@ public class UpdateBookServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         try {
-            // 1. Get data from the form
+            // Get data
             int id = Integer.parseInt(request.getParameter("id"));
             String title = request.getParameter("title");
             String author = request.getParameter("author");
@@ -28,22 +28,18 @@ public class UpdateBookServlet extends HttpServlet {
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             String imagePath = request.getParameter("imagePath");
 
-            // 2. Create a BookInfo object
             BookInfo book = new BookInfo(id, title, author, category, synopsis, price, quantity, imagePath);
 
-            // 3. Call DAO to update
             BookDAO dao = new BookDAO();
             boolean success = dao.updateBook(book);
 
-            // 4. Redirect
+            // Redirect
             if (success) {
-                // sendRedirect is best for Oracle to ensure the COMMIT is fully visible
                 response.sendRedirect(request.getContextPath() + "/resources/pages/Book/viewBook.jsp");
             } else {
                 response.sendRedirect("editBook.jsp?id=" + id + "&error=failed");
             }
         } catch (NumberFormatException e) {
-            // Handle cases where ID, Price, or Quantity are not valid numbers
             response.sendRedirect("editBook.jsp?error=invalid_input");
         }
     }
