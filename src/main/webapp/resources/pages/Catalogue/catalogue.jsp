@@ -151,8 +151,8 @@
                     <% } %>
                     <form action="${pageContext.request.contextPath}/submitReview" method="get">
                         <input type="hidden" name="id" value="<%= book.getId() %>">
-
-                        <button type="submit" class="btn-review">
+                        <button type="submit" class="btn-review"
+                                onclick="<% if (session.getAttribute("user_id") == null) { %> alert('You must log in to write a review!'); return false; <% } %>">>
                             <i class="fas fa-comments"></i> Reviews
                         </button>
                     </form>

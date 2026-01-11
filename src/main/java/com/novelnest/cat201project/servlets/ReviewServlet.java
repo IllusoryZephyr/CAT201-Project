@@ -87,7 +87,8 @@ public class ReviewServlet extends HttpServlet {
                 userId = userIdObj;
             } else {
                 // 1. Send them to login
-                response.sendRedirect(request.getContextPath() + "/resources/pages/user/login.jsp?error=please_login");
+                String loginPath = request.getContextPath() + "/resources/pages/user/login.jsp?error=please_login";
+                response.sendRedirect(loginPath);
                 return;
             }
             String bookIdStr = request.getParameter("bookId");
