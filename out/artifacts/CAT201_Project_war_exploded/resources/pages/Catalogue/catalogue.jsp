@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/common/navbar/navbar.css">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 </head>
 
 <body>
@@ -30,15 +29,13 @@
     <div class="search-filter-section">
         <form action="${pageContext.request.contextPath}/SearchBookServlet" method="get"
               class="search-form">
-
             <!-- Search Bar -->
             <div class="search-bar">
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" name="query" placeholder="Search books by title or author..."
                        value="<%= request.getAttribute(" searchQuery") !=null ?
                                         request.getAttribute("searchQuery") : "" %>"
-                       class="search-input"
-                />
+                       class="search-input"/>
             </div>
 
             <!-- Category Filter -->
@@ -70,12 +67,9 @@
     <!-- Results Count -->
     <% BookDAO dao=new BookDAO(); List<BookInfo> books = (List<BookInfo>)
             request.getAttribute("books");
-
-        // If no books in request, fetch all books
         if (books == null) {
             books = dao.getBooksForCatalogue();
         }
-
         int totalBooks = (books != null) ? books.size() : 0;
     %>
     <div class="results-info">
@@ -89,32 +83,36 @@
     <div class="book-grid">
         <% if (books !=null && !books.isEmpty()) { for (BookInfo book : books) { %>
         <div class="book-card">
-            <!-- Book Image -->
-            <div class="book-image-container">
-                <% if (book.getImagePath() !=null && !book.getImagePath().isEmpty()) {
-                %>
-                <img src="${pageContext.request.contextPath}/<%= book.getImagePath() %>"
-                     alt="<%= book.getTitle() %>" class="book-image">
-                <% } else { %>
-                <div class="book-image-placeholder">
-                    <i class="fas fa-book"></i>
+            <!-- Clickable Image -->
+            <a href="${pageContext.request.contextPath}/resources/pages/Catalogue/bookDetails.jsp?id=<%= book.getId() %>"
+               class="book-card-link">
+                <div class="book-image-container">
+                    <% if (book.getImagePath() !=null && !book.getImagePath().isEmpty())
+                    { %>
+                    <img src="${pageContext.request.contextPath}/<%= book.getImagePath() %>"
+                         alt="<%= book.getTitle() %>" class="book-image">
+                    <% } else { %>
+                    <div class="book-image-placeholder">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <% } %>
+                    <!-- Stock Badge -->
+                    <% if (book.getQuantity() <=0) { %>
+                    <span class="badge badge-out-of-stock">Out of Stock</span>
+                    <% } else if (book.getQuantity() <=5) { %>
+                    <span class="badge badge-low-stock">Low Stock</span>
+                    <% } %>
                 </div>
-                <% } %>
-
-                <!-- Stock Badge -->
-                <% if (book.getQuantity() <=0) { %>
-                <span class="badge badge-out-of-stock">Out of
-                                                                    Stock</span>
-                <% } else if (book.getQuantity() <=5) { %>
-                <span class="badge badge-low-stock">Low Stock</span>
-                <% } %>
-            </div>
+            </a>
 
             <!-- Book Info -->
             <div class="book-info">
-                <h3 class="book-title">
-                    <%= book.getTitle() %>
-                </h3>
+                <a href="${pageContext.request.contextPath}/resources/pages/Catalogue/bookDetails.jsp?id=<%= book.getId() %>"
+                   class="book-title-link">
+                    <h3 class="book-title">
+                        <%= book.getTitle() %>
+                    </h3>
+                </a>
                 <p class="book-author"><i class="fas fa-user"></i>
                     <%= book.getAuthor() %>
                 </p>
@@ -142,7 +140,6 @@
                                value="<%= book.getPrice() %>">
                         <input type="hidden" name="image"
                                value="<%= book.getImagePath() %>">
-
                         <button type="submit" class="btn-add-cart">
                             <i class="fas fa-cart-plus"></i> Add to Cart
                         </button>
@@ -169,7 +166,7 @@
     </div>
 </div>
 
-<!--jsp:include page="../../common/footer/footer.jsp" /-->
+<!--jsp:include page="/resources/common/footer/footer.jsp" /-->
 
 </body>
 
