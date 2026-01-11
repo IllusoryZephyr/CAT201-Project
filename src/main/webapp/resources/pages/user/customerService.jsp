@@ -34,7 +34,7 @@
 
     <div class="message-area" id="messageArea">
         <c:forEach var="msg" items="${chatHistory}">
-            <div class="message ${msg.senderID == sessionScope.user_id ? 'sent' : 'received'}">
+            <div class="message ${(msg.senderID == msg.ownerID) != (sessionScope.user_id == msg.ownerID) ? 'received' : 'sent'}">
                 <c:out value="${msg.message}" />
             </div>
         </c:forEach>

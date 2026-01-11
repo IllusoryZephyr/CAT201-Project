@@ -3,7 +3,7 @@
 <html>
 <head>
     <title>Edit User Name</title>
-    <link rel="stylesheet" href="editUser.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/pages/user/editUser.css">
 </head>
 <body>
 
@@ -12,13 +12,7 @@
 <div class="container">
     <h2>Change Username</h2>
 
-    <%-- Display error messages if they exist --%>
-    <% if (request.getAttribute("error") != null) { %>
-    <p style="color: red;"><%= request.getAttribute("error") %></p>
-    <% } %>
-
     <form action="${pageContext.request.contextPath}/UserServlet" method="POST">
-        <%-- Hidden field to tell the Servlet which action to take --%>
         <input type="hidden" name="action" value="edit">
 
         <div class="form-group">
@@ -26,8 +20,12 @@
             <input type="text" id="user_name" name="user_name" required>
         </div>
 
+        <% if (request.getAttribute("error") != null) { %>
+        <p style="color: red;"><%= request.getAttribute("error") %></p>
+        <% } %>
+
         <button type="submit">Update Name</button>
-        <a href="profile.jsp">Cancel</a>
+        <a href="${pageContext.request.contextPath}/resources/pages/user/profile.jsp">Cancel</a>
     </form>
 </div>
 

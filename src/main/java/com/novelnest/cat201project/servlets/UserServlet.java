@@ -70,8 +70,14 @@ public class UserServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/resources/pages/user/profile.jsp");
                 }
                 else {
-                    request.setAttribute("error", "Failed to update user.");
-                    request.getRequestDispatcher("/resources/pages/user/editUser.jsp").forward(request, response);
+                    if (user_name != null){
+                        request.setAttribute("error", "Username already exists.");
+                        request.getRequestDispatcher("/resources/pages/user/editUserName.jsp").forward(request, response);
+                    }
+                    else {
+                        request.setAttribute("error", "Failed to update user.");
+                        request.getRequestDispatcher("/resources/pages/user/editUserPassword.jsp").forward(request, response);
+                    }
                 }
             }
             else {
