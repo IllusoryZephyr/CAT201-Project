@@ -45,7 +45,7 @@
                     <% String selectedCategory=(String) request.getAttribute("selectedCategory");
                         String[] categories={"Fiction", "Non-Fiction" , "Mystery" , "Romance"
                                 , "Science Fiction" , "Fantasy" , "Biography" , "Self-Help" , "History"
-                                , "Thriller" }; for (String cat : categories) { boolean
+                                , "Thriller" , "Education"}; for (String cat : categories) { boolean
                                 isSelected=cat.equals(selectedCategory); %>
                     <option value="<%= cat %>" <%=isSelected ? "selected" : "" %>><%= cat %>
                     </option>
