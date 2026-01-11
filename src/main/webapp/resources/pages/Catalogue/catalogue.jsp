@@ -28,7 +28,7 @@
             <!-- Search Bar -->
             <div class="search-bar">
                 <i class="fas fa-search search-icon"></i>
-                <input type="text" name="query" placeholder="Search books by title..."
+                <input type="text" name="query" placeholder="Search books by title or author..."
                        value="<%= request.getAttribute("searchQuery") !=null ?
                                         request.getAttribute("searchQuery") : "" %>"
                        class="search-input"
@@ -109,6 +109,9 @@
                 <h3 class="book-title">
                     <%= book.getTitle() %>
                 </h3>
+                <p class="book-author"><i class="fas fa-user"></i>
+                    <%= book.getAuthor() %>
+                </p>
                 <p class="book-category"><i class="fas fa-tag"></i>
                     <%= book.getCategory() %>
                 </p>

@@ -20,7 +20,7 @@ public class SearchBookServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
 
         // Get search parameters from request
-        String query = request.getParameter("query"); // For title search
+        String query = request.getParameter("query"); // For title or author search
         String category = request.getParameter("category"); // For category filter
 
         BookDAO dao = new BookDAO();
@@ -28,7 +28,7 @@ public class SearchBookServlet extends HttpServlet {
 
         // Determine search type based on parameters provided
         if (query != null && !query.trim().isEmpty()) {
-            // Search by title
+            // Search by title or author
             books = dao.searchBooksForCatalogue(query.trim());
         } else if (category != null && !category.trim().isEmpty()) {
             // Filter by category
@@ -38,7 +38,7 @@ public class SearchBookServlet extends HttpServlet {
             books = dao.getBooksForCatalogue();
         }
 
-        // Set the books list as request attribute for the JSP
+        // Set the books list
         request.setAttribute("books", books);
         request.setAttribute("searchQuery", query);
         request.setAttribute("selectedCategory", category);
