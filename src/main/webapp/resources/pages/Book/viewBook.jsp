@@ -109,7 +109,7 @@
             <td>
                 <a href="${pageContext.request.contextPath}/resources/pages/Book/viewBook.jsp?id=<%= book.getId() %>" class="btn-edit">View</a>
                 <a href="${pageContext.request.contextPath}/resources/pages/Book/editBook.jsp?id=<%= book.getId() %>" class="btn-edit">Edit</a>
-                <a href="${pageContext.request.contextPath}/DeleteBookServlet?id=<%= book.getId() %>" class="btn-delete" onclick="return confirm('Are you sure?');">Delete</a>
+                <a href="${pageContext.request.contextPath}/DeleteBookServlet?id=<%= book.getId() %>" class="btn-delete">Delete</a>
             </td>
         </tr>
         <%
