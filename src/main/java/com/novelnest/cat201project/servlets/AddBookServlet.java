@@ -1,6 +1,9 @@
 package com.novelnest.cat201project.servlets;
 
 import java.io.IOException;
+import java.util.List;
+
+import com.novelnest.cat201project.models.UserInfo;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -55,5 +58,16 @@ public class AddBookServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             response.getWriter().println("Invalid input: Price and Quantity must be numbers.");
         }
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String action = request.getParameter("action");
+
+        if ("viewAllBooks".equals(action)) {
+            BookDAO bookDao = new BookDAO();
+            List<BookInfo> books = bookDao.getAllBooks();
+            request.setAttribute("bookList", books);
+            request.getRequestDispatcher("/resources/pages/Book/viewBook.jsp").forward(request, response);        }
     }
 }

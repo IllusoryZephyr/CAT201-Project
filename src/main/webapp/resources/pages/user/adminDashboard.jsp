@@ -32,6 +32,15 @@
                 <button type="submit" class="btn btn-primary">View Chats</button>
             </form>
         </div>
+
+        <div class="action-card">
+            <h3>Book Management</h3>
+            <p>View, edit, or remove book from the database.</p>
+            <form action="${pageContext.request.contextPath}/AddBookServlet" method="GET">
+                <input type="hidden" name="action" value="viewAllBooks">
+                <button type="submit" class="btn btn-primary">Manage Book</button>
+            </form>
+        </div>
     </div>
 </div>
 
