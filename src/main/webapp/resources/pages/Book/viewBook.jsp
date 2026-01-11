@@ -5,7 +5,8 @@
 <html>
 <head>
     <title>NovelNest - Book Catalog</title>
-    <link rel="stylesheet" type="text/css" href="viewBook.css">
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/resources/pages/Book/viewBook.css">
 </head>
 <body>
 
@@ -38,7 +39,6 @@
                     String imgPath = singleBook.getImagePath();
                     String defaultImage = "images/default_book.png";
 
-                    // Java 检查：如果数据库为空，使用默认图
                     if (imgPath == null || imgPath.trim().isEmpty()) {
                         imgPath = defaultImage;
                     }
@@ -100,8 +100,8 @@
             <td>RM <%= String.format("%.2f", book.getPrice()) %></td>
             <td><%= book.getQuantity() %> units</td>
             <td>
-                <a href="viewBook.jsp?id=<%= book.getId() %>" class="btn-edit">View</a>
-                <a href="editBook.jsp?id=<%= book.getId() %>" class="btn-edit">Edit</a>
+                <a href="${pageContext.request.contextPath}/resources/pages/Book/viewBook.jsp?id=<%= book.getId() %>" class="btn-edit">View</a>
+                <a href="${pageContext.request.contextPath}/resources/pages/Book/editBook.jsp?id=<%= book.getId() %>" class="btn-edit">Edit</a>
                 <a href="${pageContext.request.contextPath}/DeleteBookServlet?id=<%= book.getId() %>" class="btn-delete" onclick="return confirm('Are you sure?');">Delete</a>
             </td>
         </tr>

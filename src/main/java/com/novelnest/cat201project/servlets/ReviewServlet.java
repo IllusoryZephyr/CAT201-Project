@@ -26,7 +26,7 @@ public class ReviewServlet extends HttpServlet {
         HttpSession session = request.getSession();
         if (session.getAttribute("currentUser") == null) {
             UserInfo testUser = new UserInfo();
-            testUser.setId(2);
+            testUser.setId(43);
             testUser.setName("TesterAdmin");
             session.setAttribute("currentUser", testUser);
         }
@@ -86,7 +86,10 @@ public class ReviewServlet extends HttpServlet {
             if (user != null) {
                 userId = user.getId();
             } else {
-                userId = 0;
+                // 1. Send them to login
+                response.sendRedirect("login.jsp?error=please_login");
+                // 2. IMPORTANT: Stop the method here so we don't use 'userId' below
+                return;
             }
             String bookIdStr = request.getParameter("bookId");
             String ratingStr = request.getParameter("rating");
