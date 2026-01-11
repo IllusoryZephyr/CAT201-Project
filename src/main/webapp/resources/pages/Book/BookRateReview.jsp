@@ -10,7 +10,7 @@
         .rating-summary { background: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0; }
         .avg-score { font-weight: bold; color: #f39c12; }
     </style>
-    <link rel="stylesheet" type="text/css" href="BookRateReview.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/pages/Book/BookRateReview.css">
     <script src="${pageContext.request.contextPath}/resources/pages/Book/bookFunction.js" defer></script>
 </head>
 <body>
@@ -19,6 +19,8 @@
 
 
 <div class="review-section">
+
+
     <h3>Leave a Review</h3>
     <form id="reviewForm" action="${pageContext.request.contextPath}/submitReview" method="post">
 
@@ -30,7 +32,6 @@
             }
         %>
         <input type="hidden" name="bookId" id="bookId" value="<%= currentBookId %>">
-        <input type="hidden" name="userId" id="hiddenUserId" value="1">
         <div class="form-group">
             <label>Rating:</label>
             <select name="rating" required>

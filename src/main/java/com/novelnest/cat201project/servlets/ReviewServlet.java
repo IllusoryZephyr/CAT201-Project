@@ -25,10 +25,10 @@ public class ReviewServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         if (session.getAttribute("currentUser") == null) {
-            UserInfo testUser = new UserInfo();
-            testUser.setId(43);
-            testUser.setName("TesterAdmin");
-            session.setAttribute("currentUser", testUser);
+            //UserInfo testUser = new UserInfo();
+            //testUser.setId(43);
+            //testUser.setName("TesterAdmin");
+            //session.setAttribute("currentUser", testUser);
         }
 
         if (idStr == null || idStr.isEmpty()) return;
@@ -79,16 +79,15 @@ public class ReviewServlet extends HttpServlet {
 
         try {
             HttpSession session = request.getSession(false); // false = don't create a new session if one doesn't exist
-            UserInfo user = (session != null) ? (UserInfo) session.getAttribute("currentUser") : null;// 2. Check if a user is actually logged in
+            Integer userIdObj = (session != null) ? (Integer) session.getAttribute("user_id") : null;
 
             int userId;
 
-            if (user != null) {
-                userId = user.getId();
+            if (userIdObj != null) {
+                userId = userIdObj;
             } else {
                 // 1. Send them to login
-                response.sendRedirect("login.jsp?error=please_login");
-                // 2. IMPORTANT: Stop the method here so we don't use 'userId' below
+                response.sendRedirect(request.getContextPath() + "/resources/pages/user/login.jsp?error=please_login");
                 return;
             }
             String bookIdStr = request.getParameter("bookId");

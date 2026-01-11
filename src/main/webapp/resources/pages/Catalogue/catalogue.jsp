@@ -149,6 +149,13 @@
                         <i class="fas fa-ban"></i> Unavailable
                     </button>
                     <% } %>
+                    <form action="${pageContext.request.contextPath}/submitReview" method="get">
+                        <input type="hidden" name="id" value="<%= book.getId() %>">
+
+                        <button type="submit" class="btn-review">
+                            <i class="fas fa-comments"></i> Reviews
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

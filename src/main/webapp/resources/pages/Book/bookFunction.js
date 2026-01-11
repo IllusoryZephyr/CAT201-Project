@@ -40,20 +40,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
 
     let bookId = urlParams.get('id');
-    // If URL fails, try hidden input.
-// Add a check to make sure it's a number, not the string "Not Logged In"
+
     if (!bookId || isNaN(bookId)) {
         const hiddenIdInput = document.querySelector('input[name="bookId"]');
         if (hiddenIdInput && !isNaN(hiddenIdInput.value)) {
             bookId = hiddenIdInput.value;
         } else {
-            // DEFAULT FOR TESTING: If everything fails, use a known Book ID like 2
             bookId = 2;
             console.warn("Book ID was invalid. Defaulting to ID 2 for testing.");
         }
     }
 
-    // --- 2. FETCH FUNCTION (UPDATED TO PREVENT JUMBLED TEXT) ---
     function fetchSqlRows() {
         fetch(`${contextPath}/submitReview?id=${bookId}&format=html`)
             .then(res => res.text())
@@ -62,11 +59,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 const doc = parser.parseFromString(data, 'text/html');
 
                 const summarySource = doc.querySelector("#sql-summary-data");
-                // CHANGE: Select all 'tr' elements inside the wrapper
                 const tableSourceRows = doc.querySelectorAll("#sql-table-data tr");
                 console.log("Number of rows found in response:", tableSourceRows.length);
                 if (tableSourceRows.length > 0) {
-                    // Debug: Check the first cell of the first row
                     console.log("First row content:", tableSourceRows[0].innerHTML);
                 }
 
@@ -80,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (tableBody) {
                     tableBody.innerHTML = ""; // Clear old content
                     if (tableSourceRows.length > 0) {
-                        // Append each row properly
                         tableSourceRows.forEach(row => {
                             tableBody.appendChild(row);
                         });
@@ -92,10 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(err => console.error("Fetch Error:", err));
     }
 
-    // --- 3. INITIAL EXECUTION ---
     fetchSqlRows();
 
-    // --- 4. FORM SUBMISSION (AJAX) ---
     const reviewForm = document.getElementById('reviewForm');
     if (reviewForm) {
         reviewForm.addEventListener('submit', function(e) {

@@ -15,7 +15,6 @@ public class UpdateBookServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // IMPORTANT: Set encoding before reading any parameters for Oracle compatibility
         request.setCharacterEncoding("UTF-8");
 
         try {
