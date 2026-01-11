@@ -88,7 +88,6 @@
         modal.classList.remove('active');
     }
 
-    // Close modal if clicking outside the box
     window.onclick = function(event) {
         if (event.target == modal) closeModal();
     }

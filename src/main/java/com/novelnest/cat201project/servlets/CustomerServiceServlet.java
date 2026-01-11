@@ -51,7 +51,7 @@ public class CustomerServiceServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         HttpSession session = request.getSession();
         Integer ownerId = (Integer) session.getAttribute("chat_owner_id");
