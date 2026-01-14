@@ -13,7 +13,7 @@
 <div class="chat-container">
     <div class="chat-header" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
 
-        <a href="${sessionScope.user_is_admin ? pageContext.request.contextPath.concat('/CustomerServiceServlet?action=viewAllChats') : pageContext.request.contextPath.concat('/resources/pages/user/profile.jsp')}"
+        <a href="${sessionScope.user_is_admin ? pageContext.request.contextPath.concat('/CustomerServiceServlet?action=viewAllChats') : pageContext.request.contextPath.concat('/resources/pages/home/Main.jsp')}"
            class="back-btn">
             &larr; ${sessionScope.user_is_admin ? 'Back' : 'Home'}
         </a>
