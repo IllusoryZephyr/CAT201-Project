@@ -39,7 +39,7 @@
 
     <div class="signup-link">
         <p>Don't have an account?</p>
-        <a href="signup.jsp" class="btn-signup">Create Account</a>
+        <a href="${pageContext.request.contextPath}/resources/pages/user/signup.jsp" class="btn-signup">Create Account</a>
     </div>
 </div>
 
